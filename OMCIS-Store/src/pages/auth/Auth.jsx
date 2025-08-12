@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { auth } from "../../services/firebase";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -19,18 +20,51 @@ const Auth = () => {
     try {
       if (isLogin) {
         await signInWithEmailAndPassword(auth, email, password);
+        setError("✅ Login realizado com sucesso!");
       } else {
         await createUserWithEmailAndPassword(auth, email, password);
+        setError("✅ Conta criada com sucesso!");
       }
-      navigate("/");
+      setTimeout(() => {
+        setError("");
+        navigate("/");
+      }, 2000);
     } catch (error) {
       setError(error.message.replace("Firebase: ", ""));
     }
   };
 
   return (
-    <div>
-      
+    <div className="auth-container">
+      <h1>{isLogin ? "Login" : "Criar conta"}</h1>
+
+      <form className="form-login" onSubmit={handleAuth}>
+        <input
+          type="email"
+          placeholder="Digite seu email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          placeholder="Digite sua senha"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit">{isLogin ? "Login" : "Cadastrar"}</button>
+      </form>
+
+      <button className="toggle-btn" onClick={() => setIsLogin(!isLogin)}>
+        {isLogin
+          ? "Não tem conta? Cadastre-se"
+          : "Ja tem uma conta? Faça login"}
+      </button>
+
+      {error && <div className="popup-login_error">{error}</div>}
     </div>
   );
 };
