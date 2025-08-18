@@ -1,10 +1,17 @@
 import React from "react";
+import styles from "./Produtos.module.css";
 
 const Produtos = () => {
   return (
     <div>
-      <h1>Produtos</h1>
-      <p>Aqui você pode gerenciar os produtos.</p>
+      <div>
+        <input
+          className={styles.products_search}
+          id="search-products"
+          type="search"
+        />
+        <button>Buscar</button>
+      </div>
     </div>
   );
 };

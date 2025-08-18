@@ -1,7 +1,7 @@
 .NavbarAdmin_Container {
   display: flex;
   flex-direction: column;
-  height: 100%; /* Ocupa 100% da altura do container pai (.navbar) */
+  height: 100%; 
   width: 300px;
   gap: 5px;
   padding: 10px;

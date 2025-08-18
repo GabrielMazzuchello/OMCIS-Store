@@ -8,18 +8,21 @@
 
 .content {
   display: flex;
-  flex: 1; /* Ocupa todo espaço vertical disponível */
-  margin: 0 10px 10px 10px; /* Ajuste das margens */
-  min-height: 0; /* Corrige bug de flex em alguns navegadores */
+  flex: 1; 
+  margin: 0 10px 10px 10px;
+  min-height: 0; 
 }
 
 .navbar {
-  display: flex; /* Adicionado */
+  display: flex;
   margin-right: 5px;
   border: 3px solid #334155;
   border-radius: 15px;
   box-shadow: inset 0px 0px 20px 5px #222b37;
-  height: 100%; /* Ocupa 100% da altura do content */
+  min-height: 100%;
+  max-width: 250px;
+  
+  flex: 1;
 }
 
 .header_container {
@@ -29,7 +32,7 @@
   justify-content: space-between;
   font-weight: bold;
   font-size: 18px;
-  padding: 10px;
+  /* padding: 10px; */
   border: 3px solid #334155;
   border-radius: 15px;
   box-shadow: inset 0px 0px 20px 5px #222b37;
@@ -47,12 +50,17 @@
 }
 
 .navLink {
-  padding: 12px;
+  padding: 10px;
   margin: 4px 0;
-  color: #63DEBE;
+  color: #63debe;
   text-decoration: none;
   font-size: 25px;
   font-weight: bold;
   border-radius: 8px;
   transition: 0.2s;
+}
+
+.text {
+  padding: 10px;
+  margin: 0;
 }

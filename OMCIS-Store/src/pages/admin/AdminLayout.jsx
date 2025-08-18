@@ -10,14 +10,14 @@ const AdminLayout = () => {
         <NavLink className={styles.navLink} to={"/"}>
           OMCIS Store
         </NavLink>
-        <h3>Painel Administrativo</h3>
+        <h3 className={styles.text}>Painel Administrativo</h3>
       </header>
       <div className={styles.content}>
         <div className={styles.navbar}>
           <NavbarAdmin />
         </div>
         <div className={styles.page}>
-          <Outlet /> {/* aqui entram HomeAdmin, Produtos, etc */}
+          <Outlet /> 
         </div>
       </div>
     </div>
