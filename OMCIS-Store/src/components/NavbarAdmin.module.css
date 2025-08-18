@@ -1,0 +1,29 @@
+.NavbarAdmin_Container {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* Ocupa 100% da altura do container pai (.navbar) */
+  width: 300px;
+  gap: 5px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.navItem {
+  padding: 12px;
+  margin: 4px 0;
+  color: #fff;
+  text-decoration: none;
+  font-size: 25px;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.navItem:hover {
+  background-color: #334155;
+}
+
+.navItem.active {
+  background-color: #141c25;
+  color: #38bdf8;
+}

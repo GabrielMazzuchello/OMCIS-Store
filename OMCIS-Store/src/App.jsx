@@ -1,11 +1,14 @@
-// importações nescessarias
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-// paginas
+// páginas públicas
 import Auth from "./pages/auth/Auth";
 import Home from "./pages/user/Home";
-import HomeAdmin from "./pages/admin/HomeAdmin";
+// páginas admin
+import AdminLayout from "./pages/admin/AdminLayout";
+import Dashboard from "./pages/admin/Dashboard";
 import Produtos from "./pages/admin/Produtos";
-// regras para as rotas
+import Categoria from "./pages/admin/Categoria";
+import Pedidos from "./pages/admin/Pedidos";
+// regras
 import { AuthProvider } from "./context/AuthContext";
 import AdminRoute from "./routes/AdminRoute";
 
@@ -14,27 +17,26 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Pública */}
+          {/* Públicas */}
           <Route path="/" element={<Home />} />
-          <Route path="/Auth" element={<Auth />} />
+          <Route path="/auth" element={<Auth />} />
 
-          {/* Protegida só para admins */}
+          {/* Área do Admin (protegida) */}
           <Route
-            path="/HomeAdmin"
+            path="/admin"
             element={
               <AdminRoute>
-                <HomeAdmin />
+                <AdminLayout />
               </AdminRoute>
             }
-          />
-          <Route
-            path="/Produtos"
-            element={
-              <AdminRoute>
-                <Produtos />
-              </AdminRoute>
-            }
-          />
+          >
+            {/* rotas filhas */}
+            <Route index element={<Dashboard />} /> {/* /admin */}
+            <Route path="produtos" element={<Produtos />} />{" "}
+            {/* /admin/produtos */}
+            <Route path="categoria" element={<Categoria />} />
+            <Route path="pedidos" element={<Pedidos />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>

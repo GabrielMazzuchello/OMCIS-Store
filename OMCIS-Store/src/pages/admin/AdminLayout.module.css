@@ -1,0 +1,58 @@
+.container {
+  color: aliceblue;
+  display: flex;
+  flex-direction: column;
+  background-color: #0b0f17;
+  min-height: 100vh;
+}
+
+.content {
+  display: flex;
+  flex: 1; /* Ocupa todo espaço vertical disponível */
+  margin: 0 10px 10px 10px; /* Ajuste das margens */
+  min-height: 0; /* Corrige bug de flex em alguns navegadores */
+}
+
+.navbar {
+  display: flex; /* Adicionado */
+  margin-right: 5px;
+  border: 3px solid #334155;
+  border-radius: 15px;
+  box-shadow: inset 0px 0px 20px 5px #222b37;
+  height: 100%; /* Ocupa 100% da altura do content */
+}
+
+.header_container {
+  margin: 10px 10px 5px 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 18px;
+  padding: 10px;
+  border: 3px solid #334155;
+  border-radius: 15px;
+  box-shadow: inset 0px 0px 20px 5px #222b37;
+}
+
+.page {
+  background-color: #141c25;
+  margin-left: 5px;
+  padding: 15px;
+  border: 3px solid #334155;
+  box-shadow: inset 0px 0px 20px 5px #222b37;
+  border-radius: 15px;
+  flex: 1;
+  overflow: auto;
+}
+
+.navLink {
+  padding: 12px;
+  margin: 4px 0;
+  color: #63DEBE;
+  text-decoration: none;
+  font-size: 25px;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: 0.2s;
+}

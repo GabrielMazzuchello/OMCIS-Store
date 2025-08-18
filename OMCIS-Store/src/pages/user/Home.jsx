@@ -34,7 +34,7 @@ export default function Home() {
     <div>
       <h1>Home</h1>
       <button onClick={() => navigate("/Auth")}>Login</button>
-      {isAdmin && <button onClick={() => navigate("/HomeAdmin")}>Admin</button>}
+      {isAdmin && <button onClick={() => navigate("/admin")}>Admin</button>}
     </div>
   );
 }
