@@ -1,5 +1,5 @@
 import React from "react";
-import "./Auth.css";
+import styles from "./Auth.module.css";
 import { useState } from "react";
 import {
   signInWithEmailAndPassword,
@@ -35,10 +35,10 @@ const Auth = () => {
   };
 
   return (
-    <div className="auth-container">
-      <h1>{isLogin ? "Login" : "Criar conta"}</h1>
-
-      <form className="form-login" onSubmit={handleAuth}>
+    <div className={styles.authContainer}>
+      {error && <div className={styles.popupLogin_error}>{error}</div>}
+      <form className={styles.formLogin} onSubmit={handleAuth}>
+        <h1>{isLogin ? "Login" : "Criar conta"}</h1>
         <input
           type="email"
           placeholder="Digite seu email"
@@ -55,16 +55,19 @@ const Auth = () => {
           required
         />
 
-        <button type="submit">{isLogin ? "Login" : "Cadastrar"}</button>
+        <button className={styles.formLogin_button} type="submit">
+          {isLogin ? "Login" : "Cadastrar"}
+        </button>
+        <button
+          type="button"
+          className={styles.toggleBtn}
+          onClick={() => setIsLogin(!isLogin)}
+        >
+          {isLogin
+            ? "Não tem conta? Cadastre-se"
+            : "Ja tem uma conta? Faça login"}
+        </button>
       </form>
-
-      <button className="toggle-btn" onClick={() => setIsLogin(!isLogin)}>
-        {isLogin
-          ? "Não tem conta? Cadastre-se"
-          : "Ja tem uma conta? Faça login"}
-      </button>
-
-      {error && <div className="popup-login_error">{error}</div>}
     </div>
   );
 };

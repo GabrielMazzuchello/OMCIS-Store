@@ -8,6 +8,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import Produtos from "./pages/admin/Produtos";
 import Categoria from "./pages/admin/Categoria";
 import Pedidos from "./pages/admin/Pedidos";
+import NewAdmins from "./pages/admin/GerenciarAdministradores";
 // regras
 import { AuthProvider } from "./context/AuthContext";
 import AdminRoute from "./routes/AdminRoute";
@@ -36,6 +37,7 @@ function App() {
             {/* /admin/produtos */}
             <Route path="categoria" element={<Categoria />} />
             <Route path="pedidos" element={<Pedidos />} />
+            <Route path="newAdmins" element={<NewAdmins />} />
           </Route>
         </Routes>
       </BrowserRouter>

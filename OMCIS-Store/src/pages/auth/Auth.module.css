@@ -1,0 +1,112 @@
+:root {
+  /* Cores principais */
+  --color-text: aliceblue;
+  --color-primary: #63debe;
+
+  /* Backgrounds */
+  --bg-body: #0b0f17;
+  --bg-body2: #05090f;
+  --bg-page: #141c25;
+  --bg-page2: #0e131e;
+
+  /* Bordas e sombras */
+  --border-color: #334155;
+  --shadow-color: #222b37;
+  --hover-color: black;
+
+  /* açõo */
+  --activate: rgba(6, 68, 0, 0.933);
+}
+
+.authContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-body2);
+  gap: 15px;
+}
+
+.formLogin {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 2em;
+  background-color: var(--bg-page2);
+  border-radius: 25px;
+  transition: 0.4s ease-in-out;
+  width: 320px;
+}
+
+.formLogin:hover {
+  transform: scale(1.05);
+  border: 1px solid var(--hover-color);
+}
+
+.formLogin h1,
+.auth-container h1 {
+  text-align: center;
+  margin-bottom: 1.5em;
+  color: var(--color-text);
+  font-size: 35px;
+  margin: 0;
+  padding: 10px;
+}
+
+.formLogin input {
+  background: none;
+  border: none;
+  outline: none;
+  padding: 0.8em;
+  border-radius: 25px;
+  color: var(--color-text);
+  background-color: var(--bg-body2);
+  box-shadow: inset 2px 5px 10px #050505;
+}
+
+.formLogin input::placeholder {
+  color: #a0a0a0;
+}
+
+.formLogin_button {
+  margin-top: 1.5em;
+  padding: 0.7em;
+  border-radius: 5px;
+  border: none;
+  outline: none;
+  transition: 0.4s ease-in-out;
+  background-color: var(--bg-body2);
+  color: white;
+  cursor: pointer;
+}
+
+.formLogin_button:hover {
+  background-color: var(--activate);
+}
+
+.toggleBtn {
+  margin-top: 1em;
+  padding: 0.6em;
+  border-radius: 5px;
+  border: none;
+  background-color: var(--bg-body2);
+  color: white;
+  transition: 0.3s ease-in-out;
+  cursor: pointer;
+}
+
+.toggleBtn:hover {
+  background-color: red;
+  color: white;
+}
+
+.popupLogin_error {
+  margin-top: 1em;
+  padding: 0.6em;
+  border-radius: 5px;
+  background-color: #ff4444;
+  color: white;
+  text-align: center;
+  font-size: 0.9em;
+}

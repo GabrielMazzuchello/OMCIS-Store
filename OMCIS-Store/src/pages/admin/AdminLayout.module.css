@@ -1,27 +1,40 @@
+:root {
+  /* Cores principais */
+  --color-text: aliceblue;
+  --color-primary: #63debe;
+
+  /* Backgrounds */
+  --bg-body: #0b0f17;
+  --bg-page: #141c25;
+
+  /* Bordas e sombras */
+  --border-color: #334155;
+  --shadow-color: #222b37;
+}
+
 .container {
-  color: aliceblue;
+  color: var(--color-text);
   display: flex;
   flex-direction: column;
-  background-color: #0b0f17;
+  background-color: var(--bg-body);
   min-height: 100vh;
 }
 
 .content {
   display: flex;
-  flex: 1; 
+  flex: 1;
   margin: 0 10px 10px 10px;
-  min-height: 0; 
+  min-height: 0;
 }
 
 .navbar {
   display: flex;
   margin-right: 5px;
-  border: 3px solid #334155;
+  border: 3px solid var(--border-color);
   border-radius: 15px;
-  box-shadow: inset 0px 0px 20px 5px #222b37;
+  box-shadow: inset 0px 0px 20px 5px var(--shadow-color);
   min-height: 100%;
   max-width: 250px;
-  
   flex: 1;
 }
 
@@ -32,18 +45,17 @@
   justify-content: space-between;
   font-weight: bold;
   font-size: 18px;
-  /* padding: 10px; */
-  border: 3px solid #334155;
+  border: 3px solid var(--border-color);
   border-radius: 15px;
-  box-shadow: inset 0px 0px 20px 5px #222b37;
+  box-shadow: inset 0px 0px 20px 5px var(--shadow-color);
 }
 
 .page {
-  background-color: #141c25;
+  background-color: var(--bg-page);
   margin-left: 5px;
   padding: 15px;
-  border: 3px solid #334155;
-  box-shadow: inset 0px 0px 20px 5px #222b37;
+  border: 3px solid var(--border-color);
+  box-shadow: inset 0px 0px 20px 5px var(--shadow-color);
   border-radius: 15px;
   flex: 1;
   overflow: auto;
@@ -52,7 +64,7 @@
 .navLink {
   padding: 10px;
   margin: 4px 0;
-  color: #63debe;
+  color: var(--color-primary);
   text-decoration: none;
   font-size: 25px;
   font-weight: bold;
