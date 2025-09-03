@@ -1,0 +1,76 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  position: relative;
+  background-color: var(--bg-body);
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 0 15px var(--shadow-color);
+  max-width: 400px;
+  width: 90%;
+  color: var(--color-text);
+}
+
+.content {
+  margin-top: 10px;
+}
+
+.btnClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: crimson;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.input {
+  padding: 10px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-body);
+  color: var(--color-text);
+  width: 100%;
+  margin-top: 8px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btnConfirm {
+  padding: 8px 16px;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+}
+
+.btnCancel {
+  padding: 8px 16px;
+  background-color: crimson;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+}

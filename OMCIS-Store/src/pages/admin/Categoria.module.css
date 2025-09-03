@@ -1,3 +1,9 @@
+.header_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .cardGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
@@ -10,7 +16,7 @@
   border: 2px solid var(--border-color);
   border-radius: 15px;
   padding: 15px;
-  box-shadow: 0px 4px 1n0px var(--shadow-color);
+  box-shadow: 0px 4px 10px var(--shadow-color);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -44,17 +50,59 @@
   font-weight: bold;
   cursor: pointer;
   transition: 0.2s;
+  max-width: 150px;
 }
 
 .btnEdit {
   background-color: var(--color-primary);
   color: #000;
+  max-width: 150px;
 }
 
 .btnRemove {
   background-color: crimson;
   color: white;
 }
+
 .btn:hover {
   opacity: 0.85;
+}
+
+/* --------- Novos estilos do Modal --------- */
+
+.input {
+  padding: 10px;
+  border: 2px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--bg-body);
+  color: var(--color-text);
+  width: 100%;
+  margin-top: 8px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.btnConfirm {
+  padding: 8px 16px;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+}
+
+.btnCancel {
+  padding: 8px 16px;
+  background-color: crimson;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
 }
