@@ -15,6 +15,14 @@ const Produtos = () => {
   const [products, setProducts] = useState([]);
   const [busca, setBusca] = useState("");
   const [modal, setModal] = useState({ tipo: null, data: null });
+  const [categorias, setCategorias] = useState([]);
+
+  useEffect(() => {
+    const unsub = onSnapshot(collection(db, "categorias"), (snapshot) => {
+      setCategorias(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+    });
+    return () => unsub();
+  }, []);
 
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "produtos"), (snapshot) => {
@@ -88,34 +96,102 @@ const Produtos = () => {
         )}
       </div>
 
-      {/* ---------- Modal de adicionar ---------- */}
       {modal.tipo === "adicionar" && (
         <Modal titulo="Novo Produto" onClose={() => setModal({ tipo: null })}>
           <form
             onSubmit={async (e) => {
               e.preventDefault();
+
               const nome = e.target.nome.value.trim();
               const preco = parseFloat(e.target.preco.value);
               const quantidade = parseInt(e.target.quantidade.value);
+              const categoria = e.target.categoria.value;
+              const custo = parseFloat(e.target.custo.value);
+              const minEstoque = parseInt(e.target.minEstoque.value);
+              const imagen = e.target.imagen.value.trim();
+              const status = e.target.status.value === "ativo"; // radio retorna string
+
               if (!nome || isNaN(preco)) return;
 
               await addDoc(collection(db, "produtos"), {
                 nome,
+                categoria,
+                custo: isNaN(custo) ? 0 : custo,
                 preco,
-                quantidade,
-                status: false,
-                imagens: [],
+                quantidade: isNaN(quantidade) ? 0 : quantidade,
+                minEstoque: isNaN(minEstoque) ? 0 : minEstoque,
+                status,
+                imagens: imagen ? [imagen] : [],
+                createdAt: new Date(),
               });
+
               abrirFeedback("Produto criado", `"${nome}" foi adicionado.`);
               setModal({ tipo: null });
             }}
           >
+            {/* Categoria */}
+            <label>Categoria</label>
+            <select name="categoria" className={styles.input} required>
+              <option value="">Selecione uma categoria</option>
+              {categorias.map((c) => (
+                <option key={c.id} value={c.nome}>
+                  {c.nome}
+                </option>
+              ))}
+            </select>
+
+            {/* Nome */}
             <label>Nome</label>
-            <input name="nome" className={styles.input} autoFocus />
+            <input name="nome" className={styles.input} autoFocus required />
+
+            {/* Custo */}
+            <label>Custo</label>
+            <input
+              name="custo"
+              type="number"
+              step="0.01"
+              className={styles.input}
+            />
+
+            {/* Preço */}
             <label>Preço</label>
-            <input name="preco" type="number" step="0.01" className={styles.input} />
+            <input
+              name="preco"
+              type="number"
+              step="0.01"
+              className={styles.input}
+              required
+            />
+
+            {/* Estoque mínimo */}
+            <label>Estoque mínimo</label>
+            <input name="minEstoque" type="number" className={styles.input} />
+
+            {/* Quantidade */}
             <label>Quantidade</label>
             <input name="quantidade" type="number" className={styles.input} />
+
+            {/* Imagem */}
+            <label>Imagem (URL)</label>
+            <input name="imagen" type="url" className={styles.input} />
+
+            {/* Status */}
+            <label>Status</label>
+            <div className={styles.radioGroup}>
+              <label>
+                <input
+                  type="radio"
+                  name="status"
+                  value="ativo"
+                  defaultChecked
+                />{" "}
+                Ativo
+              </label>
+              <label>
+                <input type="radio" name="status" value="inativo" /> Inativo
+              </label>
+            </div>
+
             <div className={styles.actions}>
               <button type="submit" className={styles.btnConfirm}>
                 Criar
@@ -133,28 +209,78 @@ const Produtos = () => {
       )}
 
       {/* ---------- Modal de editar ---------- */}
+      {/* ---------- Modal de editar ---------- */}
       {modal.tipo === "editar" && (
         <Modal titulo="Editar Produto" onClose={() => setModal({ tipo: null })}>
           <form
             onSubmit={async (e) => {
               e.preventDefault();
+
               const nome = e.target.nome.value.trim();
               const preco = parseFloat(e.target.preco.value);
               const quantidade = parseInt(e.target.quantidade.value);
+              const categoria = e.target.categoria.value;
+              const custo = parseFloat(e.target.custo.value);
+              const minEstoque = parseInt(e.target.minEstoque.value);
+              const imagen = e.target.imagen.value.trim();
+              const status = e.target.status.value === "ativo";
+
+              if (!nome || isNaN(preco)) return;
 
               const ref = doc(db, "produtos", modal.data.id);
-              await updateDoc(ref, { nome, preco, quantidade });
+              await updateDoc(ref, {
+                nome,
+                categoria,
+                custo: isNaN(custo) ? 0 : custo,
+                preco,
+                quantidade: isNaN(quantidade) ? 0 : quantidade,
+                minEstoque: isNaN(minEstoque) ? 0 : minEstoque,
+                status,
+                imagens: imagen ? [imagen] : [],
+                updatedAt: new Date(),
+              });
+
               abrirFeedback("Produto atualizado", `"${nome}" foi alterado.`);
               setModal({ tipo: null });
             }}
           >
+            {/* Categoria */}
+            <label>Categoria</label>
+            <select
+              name="categoria"
+              className={styles.input}
+              defaultValue={modal.data.categoria || ""}
+              required
+            >
+              <option value="">Selecione uma categoria</option>
+              {categorias.map((c) => (
+                <option key={c.id} value={c.nome}>
+                  {c.nome}
+                </option>
+              ))}
+            </select>
+
+            {/* Nome */}
             <label>Nome</label>
             <input
               name="nome"
               defaultValue={modal.data.nome}
               className={styles.input}
               autoFocus
+              required
             />
+
+            {/* Custo */}
+            <label>Custo</label>
+            <input
+              name="custo"
+              type="number"
+              step="0.01"
+              defaultValue={modal.data.custo}
+              className={styles.input}
+            />
+
+            {/* Preço */}
             <label>Preço</label>
             <input
               name="preco"
@@ -162,7 +288,19 @@ const Produtos = () => {
               step="0.01"
               defaultValue={modal.data.preco}
               className={styles.input}
+              required
             />
+
+            {/* Estoque mínimo */}
+            <label>Estoque mínimo</label>
+            <input
+              name="minEstoque"
+              type="number"
+              defaultValue={modal.data.minEstoque}
+              className={styles.input}
+            />
+
+            {/* Quantidade */}
             <label>Quantidade</label>
             <input
               name="quantidade"
@@ -170,6 +308,41 @@ const Produtos = () => {
               defaultValue={modal.data.quantidade}
               className={styles.input}
             />
+
+            {/* Imagem */}
+            <label>Imagem (URL)</label>
+            <input
+              name="imagen"
+              type="url"
+              defaultValue={
+                Array.isArray(modal.data.imagens) ? modal.data.imagens[0] : ""
+              }
+              className={styles.input}
+            />
+
+            {/* Status */}
+            <label>Status</label>
+            <div className={styles.radioGroup}>
+              <label>
+                <input
+                  type="radio"
+                  name="status"
+                  value="ativo"
+                  defaultChecked={modal.data.status === true}
+                />{" "}
+                Ativo
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="status"
+                  value="inativo"
+                  defaultChecked={modal.data.status === false}
+                />{" "}
+                Inativo
+              </label>
+            </div>
+
             <div className={styles.actions}>
               <button type="submit" className={styles.btnConfirm}>
                 Salvar

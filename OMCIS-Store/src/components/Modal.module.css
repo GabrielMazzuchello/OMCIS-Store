@@ -20,7 +20,28 @@
   max-width: 400px;
   width: 90%;
   color: var(--color-text);
+  max-height: 90vh;
+  overflow-y: auto;
 }
+
+.modal {
+  max-height: 90vh;
+  overflow-y: overlay; /* Chrome/Safari */
+}
+
+.modal::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal::-webkit-scrollbar-thumb {
+  background: transparent;
+  border-radius: 4px;
+}
+
+.modal:hover::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3); /* aparece só no hover */
+}
+
 
 .content {
   margin-top: 10px;
@@ -45,7 +66,6 @@
   background-color: var(--bg-body);
   color: var(--color-text);
   width: 100%;
-  margin-top: 8px;
 }
 
 .actions {
