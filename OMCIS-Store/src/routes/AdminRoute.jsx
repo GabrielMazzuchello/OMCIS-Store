@@ -17,7 +17,13 @@ export default function AdminRoute({ children }) {
 
       try {
         const snapshot = await getDocs(collection(db, "admins"));
-        const adminUIDs = snapshot.docs.map((doc) => doc.data().uid);
+        const adminUIDs = snapshot.docs.map(
+          (doc) => doc.data().uid || doc.id // suporta os dois formatos
+        );
+
+        console.log("Admins encontrados:", adminUIDs);
+        console.log("UID atual:", currentUser.uid);
+
         setIsAdmin(adminUIDs.includes(currentUser.uid));
       } catch (err) {
         console.error("Erro ao verificar admin:", err);
@@ -28,7 +34,6 @@ export default function AdminRoute({ children }) {
     checkAdmin();
   }, [currentUser]);
 
-  console.log(currentUser, isAdmin)
   if (loading || isAdmin === null) {
     return <p>Carregando...</p>;
   }

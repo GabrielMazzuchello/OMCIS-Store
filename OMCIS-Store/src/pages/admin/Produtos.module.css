@@ -17,12 +17,16 @@
 
 .cardGrid {
   display: grid;
+  height: 275px;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 15px;
   margin-top: 20px;
+  justify-items: center;
 }
 
 .card {
+  min-width: 200px;
+  max-width: 220px;
   background-color: var(--bg-body);
   border: 2px solid var(--border-color);
   border-radius: 15px;
@@ -103,15 +107,18 @@
   border-radius: 8px;
   background-color: var(--bg-body);
   color: var(--color-text);
-  width: 100%;
-  margin-top: 8px;
 }
 
 .actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-evenly;
   gap: 10px;
   margin-top: 15px;
+}
+
+.status {
+  display: flex;
+  flex-direction: column;
 }
 
 .btnConfirm {

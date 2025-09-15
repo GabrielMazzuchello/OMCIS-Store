@@ -73,7 +73,9 @@ const CategoriaPage = () => {
       <div className={styles.cardGrid}>
         {categoriasFiltradas.map((cat) => (
           <div key={cat.id} className={styles.card}>
-            <div className={styles.cardTitle}>{cat.nome}</div>
+            <div className={styles.cardTitle}>
+              <h1>{cat.nome}</h1>
+            </div>
             <div className={styles.cardActions}>
               <button
                 className={styles.btn + " " + styles.btnEdit}

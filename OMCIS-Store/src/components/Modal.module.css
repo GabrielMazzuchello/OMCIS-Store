@@ -12,21 +12,25 @@
 }
 
 .modal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   position: relative;
   background-color: var(--bg-body);
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 0 15px var(--shadow-color);
-  max-width: 400px;
+  max-width: 500px;
   width: 90%;
   color: var(--color-text);
   max-height: 90vh;
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .modal {
   max-height: 90vh;
-  overflow-y: overlay; /* Chrome/Safari */
+  overflow-y: overlay;
 }
 
 .modal::-webkit-scrollbar {
@@ -39,12 +43,23 @@
 }
 
 .modal:hover::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.3); /* aparece só no hover */
+  background: rgba(255, 255, 255, 0.3);
 }
 
-
 .content {
-  margin-top: 10px;
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.content form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .btnClose {
@@ -65,7 +80,7 @@
   border-radius: 8px;
   background-color: var(--bg-body);
   color: var(--color-text);
-  width: 100%;
+  box-sizing: border-box;
 }
 
 .actions {
@@ -73,6 +88,7 @@
   justify-content: flex-end;
   gap: 10px;
   margin-top: 15px;
+  flex-wrap: wrap;
 }
 
 .btnConfirm {

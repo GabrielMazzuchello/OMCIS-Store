@@ -6,8 +6,8 @@ import { db } from "../../services/firebase";
 
 export default function Home() {
   const navigate = useNavigate();
-  const { currentUser } = useAuth();
-  const [isAdmin, setIsAdmin] = useState(false);
+  const { currentUser, loading } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(null);
 
   useEffect(() => {
     if (!currentUser) {
@@ -18,7 +18,11 @@ export default function Home() {
     const unsubscribe = onSnapshot(
       collection(db, "admins"),
       (snapshot) => {
-        const adminUIDs = snapshot.docs.map((doc) => doc.data().uid);
+        const adminUIDs = snapshot.docs.map((doc) => doc.data().uid || doc.id);
+
+        console.log("Admins encontrados:", adminUIDs);
+        console.log("UID atual:", currentUser.uid);
+
         setIsAdmin(adminUIDs.includes(currentUser.uid));
       },
       (error) => {
@@ -29,6 +33,10 @@ export default function Home() {
 
     return unsubscribe;
   }, [currentUser]);
+
+  if (loading || isAdmin === null) {
+    return <p>Carregando...</p>;
+  }
 
   return (
     <div>

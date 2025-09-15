@@ -64,12 +64,14 @@ const Produtos = () => {
       <div className={styles.cardGrid}>
         {produtosFiltrados.map((prod) => (
           <div key={prod.id} className={styles.card}>
-            <img
-              src={Array.isArray(prod.imagens) ? prod.imagens[0] : prod.imagens}
-              alt={prod.nome}
-              className={styles.cardImage}
-              onError={(e) => (e.currentTarget.style.display = "none")}
-            />
+            {prod.imagem && (
+              <img
+                src={prod.imagem}
+                alt={prod.nome}
+                className={styles.cardImage}
+                onError={(e) => (e.currentTarget.style.display = "none")}
+              />
+            )}
             <div className={styles.cardTitle}>{prod.nome}</div>
             <p className={styles.cardText}>Preço: R$ {prod.preco}</p>
             <p className={styles.cardText}>Estoque: {prod.quantidade}</p>
@@ -96,6 +98,7 @@ const Produtos = () => {
         )}
       </div>
 
+      {/* ---------- Modal de adicionar ---------- */}
       {modal.tipo === "adicionar" && (
         <Modal titulo="Novo Produto" onClose={() => setModal({ tipo: null })}>
           <form
@@ -108,8 +111,8 @@ const Produtos = () => {
               const categoria = e.target.categoria.value;
               const custo = parseFloat(e.target.custo.value);
               const minEstoque = parseInt(e.target.minEstoque.value);
-              const imagen = e.target.imagen.value.trim();
-              const status = e.target.status.value === "ativo"; // radio retorna string
+              const imagem = e.target.imagem.value.trim();
+              const status = e.target.status.value === "ativo";
 
               if (!nome || isNaN(preco)) return;
 
@@ -121,7 +124,7 @@ const Produtos = () => {
                 quantidade: isNaN(quantidade) ? 0 : quantidade,
                 minEstoque: isNaN(minEstoque) ? 0 : minEstoque,
                 status,
-                imagens: imagen ? [imagen] : [],
+                imagem: imagem || "",
                 createdAt: new Date(),
               });
 
@@ -129,7 +132,6 @@ const Produtos = () => {
               setModal({ tipo: null });
             }}
           >
-            {/* Categoria */}
             <label>Categoria</label>
             <select name="categoria" className={styles.input} required>
               <option value="">Selecione uma categoria</option>
@@ -140,11 +142,9 @@ const Produtos = () => {
               ))}
             </select>
 
-            {/* Nome */}
             <label>Nome</label>
             <input name="nome" className={styles.input} autoFocus required />
 
-            {/* Custo */}
             <label>Custo</label>
             <input
               name="custo"
@@ -153,7 +153,6 @@ const Produtos = () => {
               className={styles.input}
             />
 
-            {/* Preço */}
             <label>Preço</label>
             <input
               name="preco"
@@ -163,21 +162,18 @@ const Produtos = () => {
               required
             />
 
-            {/* Estoque mínimo */}
             <label>Estoque mínimo</label>
             <input name="minEstoque" type="number" className={styles.input} />
 
-            {/* Quantidade */}
             <label>Quantidade</label>
             <input name="quantidade" type="number" className={styles.input} />
 
             {/* Imagem */}
             <label>Imagem (URL)</label>
-            <input name="imagen" type="url" className={styles.input} />
+            <input name="imagem" type="url" className={styles.input} />
 
-            {/* Status */}
             <label>Status</label>
-            <div className={styles.radioGroup}>
+            <div className={styles.status}>
               <label>
                 <input
                   type="radio"
@@ -209,7 +205,6 @@ const Produtos = () => {
       )}
 
       {/* ---------- Modal de editar ---------- */}
-      {/* ---------- Modal de editar ---------- */}
       {modal.tipo === "editar" && (
         <Modal titulo="Editar Produto" onClose={() => setModal({ tipo: null })}>
           <form
@@ -222,7 +217,7 @@ const Produtos = () => {
               const categoria = e.target.categoria.value;
               const custo = parseFloat(e.target.custo.value);
               const minEstoque = parseInt(e.target.minEstoque.value);
-              const imagen = e.target.imagen.value.trim();
+              const imagem = e.target.imagem.value.trim();
               const status = e.target.status.value === "ativo";
 
               if (!nome || isNaN(preco)) return;
@@ -236,7 +231,7 @@ const Produtos = () => {
                 quantidade: isNaN(quantidade) ? 0 : quantidade,
                 minEstoque: isNaN(minEstoque) ? 0 : minEstoque,
                 status,
-                imagens: imagen ? [imagen] : [],
+                imagem: imagem || "",
                 updatedAt: new Date(),
               });
 
@@ -244,7 +239,6 @@ const Produtos = () => {
               setModal({ tipo: null });
             }}
           >
-            {/* Categoria */}
             <label>Categoria</label>
             <select
               name="categoria"
@@ -260,7 +254,6 @@ const Produtos = () => {
               ))}
             </select>
 
-            {/* Nome */}
             <label>Nome</label>
             <input
               name="nome"
@@ -270,7 +263,6 @@ const Produtos = () => {
               required
             />
 
-            {/* Custo */}
             <label>Custo</label>
             <input
               name="custo"
@@ -280,7 +272,6 @@ const Produtos = () => {
               className={styles.input}
             />
 
-            {/* Preço */}
             <label>Preço</label>
             <input
               name="preco"
@@ -291,7 +282,6 @@ const Produtos = () => {
               required
             />
 
-            {/* Estoque mínimo */}
             <label>Estoque mínimo</label>
             <input
               name="minEstoque"
@@ -300,7 +290,6 @@ const Produtos = () => {
               className={styles.input}
             />
 
-            {/* Quantidade */}
             <label>Quantidade</label>
             <input
               name="quantidade"
@@ -312,17 +301,14 @@ const Produtos = () => {
             {/* Imagem */}
             <label>Imagem (URL)</label>
             <input
-              name="imagen"
+              name="imagem"
               type="url"
-              defaultValue={
-                Array.isArray(modal.data.imagens) ? modal.data.imagens[0] : ""
-              }
+              defaultValue={modal.data.imagem || ""}
               className={styles.input}
             />
 
-            {/* Status */}
             <label>Status</label>
-            <div className={styles.radioGroup}>
+            <div className={styles.status}>
               <label>
                 <input
                   type="radio"
