@@ -3,7 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyDKLN-tsw0r7kpVYrRXunx9vaqUILIUXFo",
   authDomain: "omcis-store.firebaseapp.com",
   projectId: "omcis-store",
