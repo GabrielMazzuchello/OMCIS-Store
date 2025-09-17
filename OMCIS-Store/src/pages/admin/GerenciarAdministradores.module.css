@@ -38,7 +38,8 @@
 
 /* Barra de pesquisa */
 .search {
-  width: 97%;
+  width: 100%;
+  box-sizing: border-box;
   padding: 10px 12px;
   margin-bottom: 18px;
   border: 2px solid var(--border-color); /* Estilo e cor aplicados */
@@ -180,7 +181,7 @@
 /* Ações no modal */
 .modalActions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-evenly;
   gap: 10px;
 }
 

@@ -12,6 +12,12 @@
   --shadow-color: #222b37;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .container {
   color: var(--color-text);
   display: flex;

@@ -15,8 +15,8 @@ import AdminRoute from "./routes/AdminRoute";
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <AuthProvider>
         <Routes>
           {/* Públicas */}
           <Route path="/" element={<Home />} />
@@ -40,8 +40,8 @@ function App() {
             <Route path="newAdmins" element={<NewAdmins />} />
           </Route>
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
