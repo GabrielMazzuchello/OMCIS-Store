@@ -9,6 +9,17 @@ export default function Home() {
   const navigate = useNavigate();
   const { currentUser, loading, logout } = useAuth();
   const [isAdmin, setIsAdmin] = useState(null);
+  const [products, setProducts] = useState([]); // Renomeado para setProducts (padrão)
+
+  useEffect(() => {
+    // É uma boa prática guardar a função de unsubscribe e retorná-la
+    const unsub = onSnapshot(collection(db, "produtos"), (snapshot) => {
+      setProducts(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
+    });
+
+    // Limpa o listener quando o componente é desmontado
+    return () => unsub();
+  }, []); // Adicionado array de dependências vazio para rodar apenas uma vez
 
   const handleLogout = async () => {
     try {
@@ -36,7 +47,7 @@ export default function Home() {
       }
     );
 
-    return unsubscribe;
+    return () => unsubscribe(); // Limpa o listener
   }, [currentUser]);
 
   if (loading || isAdmin === null) {
@@ -47,15 +58,6 @@ export default function Home() {
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className={styles.title}>Oh my computer is sick!</h1>
-      </header>
-
-      <main className={styles.main}>
-        <p className={styles.subtitle}>
-          {currentUser
-            ? `Bem-vindo, ${currentUser.email}`
-            : "Bem-vindo ao sistema de merchandising!"}
-        </p>
-
         <div className={styles.buttons}>
           {!currentUser ? (
             <button className={styles.btn} onClick={() => navigate("/Auth")}>
@@ -77,6 +79,22 @@ export default function Home() {
             </>
           )}
         </div>
+      </header>
+      <main className={styles.productsGrid}>
+        {products.map((prod) => (
+          // Início do Card do Produto
+          <div key={prod.id} className={styles.productCard}>
+            <img src={prod.imagem} alt={prod.nome} className={styles.productImage} />
+            <div className={styles.cardBody}>
+              <h2 className={styles.productName}>{prod.nome}</h2>
+              <p className={styles.productPrice}>
+                {prod.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+              </p>
+              <button className={styles.addToCartBtn}>Adicionar ao Carrinho</button>
+            </div>
+          </div>
+          // Fim do Card do Produto
+        ))}
       </main>
     </div>
   );
