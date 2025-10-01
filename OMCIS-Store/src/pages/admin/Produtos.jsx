@@ -16,6 +16,8 @@ const Produtos = () => {
   const [busca, setBusca] = useState("");
   const [modal, setModal] = useState({ tipo: null, data: null });
   const [categorias, setCategorias] = useState([]);
+  const [tamanhos, setTamanhos] = useState([]);
+  const [tamanhoAtual, setTamanhoAtual] = useState("");
 
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "categorias"), (snapshot) => {
@@ -31,8 +33,22 @@ const Produtos = () => {
     return () => unsub();
   }, []);
 
+  const handleAddTamanho = () => {
+    if (tamanhoAtual.trim() !== "" && !tamanhos.includes(tamanhoAtual.trim())) {
+      setTamanhos([...tamanhos, tamanhoAtual.trim()]);
+      setTamanhoAtual("");
+    }
+  };
+
+  const handleRemoveTamanho = (tamanhoParaRemover) => {
+    setTamanhos(tamanhos.filter((t) => t !== tamanhoParaRemover));
+  };
+
   const abrirAdicionar = () => setModal({ tipo: "adicionar" });
-  const abrirEditar = (prod) => setModal({ tipo: "editar", data: prod });
+  const abrirEditar = (prod) => {
+    setModal({ tipo: "editar", data: prod });
+    setTamanhos(prod.tamanhos || []);
+  };
   const abrirRemover = (prod) => setModal({ tipo: "remover", data: prod });
   const abrirFeedback = (titulo, mensagem) =>
     setModal({ tipo: "feedback", data: { titulo, mensagem } });
@@ -75,6 +91,11 @@ const Produtos = () => {
             <div className={styles.cardTitle}>{prod.nome}</div>
             <p className={styles.cardText}>Preço: R$ {prod.preco}</p>
             <p className={styles.cardText}>Estoque: {prod.quantidade}</p>
+            {prod.tamanhos && prod.tamanhos.length > 0 && (
+              <p className={styles.cardText}>
+                Tamanhos: {prod.tamanhos.join(", ")}
+              </p>
+            )}
             <div className={styles.cardActions}>
               <button
                 className={styles.btn + " " + styles.btnEdit}
@@ -123,6 +144,7 @@ const Produtos = () => {
                 preco,
                 quantidade: isNaN(quantidade) ? 0 : quantidade,
                 minEstoque: isNaN(minEstoque) ? 0 : minEstoque,
+                tamanhos: tamanhos,
                 status,
                 imagem: imagem || "",
                 createdAt: new Date(),
@@ -162,6 +184,34 @@ const Produtos = () => {
               required
             />
 
+            <label>Tamanhos</label>
+            <div className={styles.tamanhosContainer}>
+              <input
+                name="tamanho"
+                type="text"
+                className={styles.input}
+                value={tamanhoAtual}
+                onChange={(e) => setTamanhoAtual(e.target.value)}
+                placeholder="Ex: P, M, 42..."
+              />
+              <button
+                type="button"
+                onClick={handleAddTamanho}
+                className={styles.btn}
+              >
+                Add
+              </button>
+            </div>
+            <div className={styles.tamanhosList}>
+              {tamanhos.map((t, index) => (
+                <div key={index} className={styles.tamanhoTag}>
+                  {t}
+                  <button type="button" onClick={() => handleRemoveTamanho(t)}>
+                    &times;
+                  </button>
+                </div>
+              ))}
+            </div>
             <label>Estoque mínimo</label>
             <input name="minEstoque" type="number" className={styles.input} />
 
@@ -230,6 +280,7 @@ const Produtos = () => {
                 preco,
                 quantidade: isNaN(quantidade) ? 0 : quantidade,
                 minEstoque: isNaN(minEstoque) ? 0 : minEstoque,
+                tamanhos: tamanhos,
                 status,
                 imagem: imagem || "",
                 updatedAt: new Date(),
@@ -237,6 +288,7 @@ const Produtos = () => {
 
               abrirFeedback("Produto atualizado", `"${nome}" foi alterado.`);
               setModal({ tipo: null });
+              setTamanhos([]);
             }}
           >
             <label>Categoria</label>
@@ -281,6 +333,35 @@ const Produtos = () => {
               className={styles.input}
               required
             />
+
+            <label>Tamanhos</label>
+            <div className={styles.tamanhosContainer}>
+              <input
+                name="tamanho"
+                type="text"
+                className={styles.input}
+                value={tamanhoAtual}
+                onChange={(e) => setTamanhoAtual(e.target.value)}
+                placeholder="Ex: P, M, 42..."
+              />
+              <button
+                type="button"
+                onClick={handleAddTamanho}
+                className={styles.btn}
+              >
+                Add
+              </button>
+            </div>
+            <div className={styles.tamanhosList}>
+              {tamanhos.map((t, index) => (
+                <div key={index} className={styles.tamanhoTag}>
+                  {t}
+                  <button type="button" onClick={() => handleRemoveTamanho(t)}>
+                    &times;
+                  </button>
+                </div>
+              ))}
+            </div>
 
             <label>Estoque mínimo</label>
             <input

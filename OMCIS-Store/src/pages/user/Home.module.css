@@ -70,14 +70,15 @@
   gap: 2rem;
   padding: 2rem;
   width: 100%;
-  max-width: 1200px;
+  /* max-width: 1200px;  limitrava em 4 o grid dos produtos*/ 
   margin: 0 auto;
 }
 
 .productCard {
-  background-color: #fff;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-page);
+  border-radius: 15px;
+  border: 3px solid var(--border-color);
+  box-shadow: inset 0px 0px 20px 5px var(--shadow-color);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -98,36 +99,37 @@
   padding: 1rem;
   display: flex;
   flex-direction: column;
-  flex-grow: 1; /* Faz o corpo do card crescer para preencher o espaço */
+  flex-grow: 1;
 }
 
 .productName {
   font-size: 1.2rem;
   font-weight: 600;
-  color: #333;
+  color: var(--color-text);
   margin: 0 0 0.5rem 0;
 }
 
 .productPrice {
   font-size: 1.3rem;
   font-weight: bold;
-  color: #007bff;
+  color: var(--color-primary);
   margin-bottom: 1rem;
-  margin-top: auto; /* Empurra o preço e botão para baixo */
+  margin-top: auto;
 }
 
 .addToCartBtn {
-  background-color: #007bff;
-  color: white;
-  border: none;
+  background-color: var(--color-primary);
+  color: var(--bg-body);
+  font-weight: bold;
+  border: 2px solid var(--border-color);
   padding: 0.75rem;
   border-radius: 5px;
   cursor: pointer;
   font-size: 1rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  transition: 0.3s;
 }
 
 .addToCartBtn:hover {
-  background-color: #0056b3;
+  background-color: transparent;
+  color: var(--color-primary);
 }

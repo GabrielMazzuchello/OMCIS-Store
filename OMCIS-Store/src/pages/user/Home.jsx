@@ -84,13 +84,23 @@ export default function Home() {
         {products.map((prod) => (
           // Início do Card do Produto
           <div key={prod.id} className={styles.productCard}>
-            <img src={prod.imagem} alt={prod.nome} className={styles.productImage} />
+            <img
+              src={prod.imagem}
+              alt={prod.nome}
+              className={styles.productImage}
+            />
             <div className={styles.cardBody}>
               <h2 className={styles.productName}>{prod.nome}</h2>
+              <p>Tamanhos: {prod.tamanhos.join(", ")}</p>
               <p className={styles.productPrice}>
-                {prod.preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                {prod.preco.toLocaleString("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                })}
               </p>
-              <button className={styles.addToCartBtn}>Adicionar ao Carrinho</button>
+              <button className={styles.addToCartBtn}>
+                Adicionar ao Carrinho
+              </button>
             </div>
           </div>
           // Fim do Card do Produto

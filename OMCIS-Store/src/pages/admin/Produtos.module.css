@@ -140,3 +140,53 @@
   cursor: pointer;
   color: #fff;
 }
+
+/* arrumar a css */
+
+/* Adicione ao seu Produtos.module.css */
+.tamanhosContainer {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.tamanhosContainer input {
+  flex-grow: 1;
+}
+
+.tamanhosContainer .btn {
+  padding: 8px 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tamanhosList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 15px;
+}
+
+.tamanhoTag {
+  background-color: #e9ecef;
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tamanhoTag button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #6c757d;
+  padding: 0;
+  line-height: 1;
+}
