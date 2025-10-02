@@ -88,14 +88,17 @@ const Produtos = () => {
                 onError={(e) => (e.currentTarget.style.display = "none")}
               />
             )}
-            <div className={styles.cardTitle}>{prod.nome}</div>
-            <p className={styles.cardText}>Preço: R$ {prod.preco}</p>
-            <p className={styles.cardText}>Estoque: {prod.quantidade}</p>
-            {prod.tamanhos && prod.tamanhos.length > 0 && (
-              <p className={styles.cardText}>
-                Tamanhos: {prod.tamanhos.join(", ")}
-              </p>
-            )}
+            <div className={styles.cardinfo}>
+              <div className={styles.cardTitle}>{prod.nome}</div>
+              <p className={styles.cardText}>Preço: R$ {prod.preco}</p>
+              <p className={styles.cardText}>Estoque: {prod.quantidade}</p>
+              {prod.tamanhos && prod.tamanhos.length > 0 && (
+                <p className={styles.cardText}>
+                  Tamanhos: {prod.tamanhos.join(", ")}
+                </p>
+              )}
+            </div>
+
             <div className={styles.cardActions}>
               <button
                 className={styles.btn + " " + styles.btnEdit}

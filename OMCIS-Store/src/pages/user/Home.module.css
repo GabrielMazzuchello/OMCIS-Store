@@ -66,11 +66,10 @@
 
 .productsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 2rem;
-  padding: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  padding: 1.5rem;
   width: 100%;
-  /* max-width: 1200px;  limitrava em 4 o grid dos produtos*/ 
   margin: 0 auto;
 }
 
@@ -91,29 +90,30 @@
 
 .productImage {
   width: 100%;
-  height: 200px;
+  height: 180px;
   object-fit: cover;
 }
 
 .cardBody {
-  padding: 1rem;
+  padding: 0.8rem;
   display: flex;
   flex-direction: column;
   flex-grow: 1;
+  line-height: 5px;
 }
 
 .productName {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: var(--color-text);
   margin: 0 0 0.5rem 0;
 }
 
 .productPrice {
-  font-size: 1.3rem;
+  font-size: 1.15rem;
   font-weight: bold;
   color: var(--color-primary);
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
   margin-top: auto;
 }
 
@@ -122,10 +122,10 @@
   color: var(--bg-body);
   font-weight: bold;
   border: 2px solid var(--border-color);
-  padding: 0.75rem;
+  padding: 0.6rem;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 0.9rem;
   transition: 0.3s;
 }
 

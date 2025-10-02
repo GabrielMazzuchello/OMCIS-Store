@@ -9,17 +9,15 @@ export default function Home() {
   const navigate = useNavigate();
   const { currentUser, loading, logout } = useAuth();
   const [isAdmin, setIsAdmin] = useState(null);
-  const [products, setProducts] = useState([]); // Renomeado para setProducts (padrão)
+  const [products, setProducts] = useState([]); 
 
   useEffect(() => {
-    // É uma boa prática guardar a função de unsubscribe e retorná-la
     const unsub = onSnapshot(collection(db, "produtos"), (snapshot) => {
       setProducts(snapshot.docs.map((d) => ({ id: d.id, ...d.data() })));
     });
 
-    // Limpa o listener quando o componente é desmontado
     return () => unsub();
-  }, []); // Adicionado array de dependências vazio para rodar apenas uma vez
+  }, []);
 
   const handleLogout = async () => {
     try {

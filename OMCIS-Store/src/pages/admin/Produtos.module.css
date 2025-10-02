@@ -19,9 +19,16 @@
   display: grid;
   height: 275px;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 15px;
   margin-top: 20px;
   justify-items: center;
+}
+
+.cardGrid p {
+  line-height: 3px;
+}
+
+.cardGrid img {
+  width: 175px;
 }
 
 .card {
@@ -34,6 +41,7 @@
   box-shadow: 0px 4px 10px var(--shadow-color);
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -52,6 +60,10 @@
   background-color: #1e1e1e; /* fallback quando não há imagem */
 }
 
+.cardinfo {
+  width: 100%;
+}
+
 .cardTitle {
   font-size: 18px;
   font-weight: bold;
@@ -68,6 +80,7 @@
 
 .cardActions,
 .btn_Actions {
+  width: 100%;
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -143,7 +156,6 @@
 
 /* arrumar a css */
 
-/* Adicione ao seu Produtos.module.css */
 .tamanhosContainer {
   display: flex;
   gap: 10px;
