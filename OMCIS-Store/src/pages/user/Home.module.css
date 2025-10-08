@@ -21,6 +21,35 @@
   color: var(--color-primary);
 }
 
+.filtersContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.filterSelectContainer {
+  display: flex;
+  padding: 5px;
+  align-items: center;
+}
+
+.filterSelectContainer select {
+  margin: 5px;
+}
+
+.filterSelectContainer div {
+  margin-left: 5px;
+}
+.searchInput {
+  margin-top: 15px;
+  padding: 8px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-body);
+  color: var(--color-text);
+}
+
 .main {
   flex: 1;
   display: flex;
@@ -39,6 +68,7 @@
 .buttons {
   display: flex;
   gap: 15px;
+  justify-content: flex-end;
 }
 
 .btn {
