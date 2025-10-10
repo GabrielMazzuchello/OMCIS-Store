@@ -21,6 +21,11 @@
   color: var(--color-primary);
 }
 
+.carrinhoImg {
+  height: 20px;
+  width: 20px;
+}
+
 .filtersContainer {
   display: flex;
   flex-direction: column;
@@ -32,15 +37,9 @@
   align-items: center;
 }
 
-.filterSelectContainer select {
-  margin: 5px;
-}
-
-.filterSelectContainer div {
-  margin-left: 5px;
-}
 .searchInput {
   margin-top: 15px;
+  margin-left: 3px;
   padding: 8px;
   width: 100%;
   box-sizing: border-box;
@@ -65,10 +64,11 @@
   opacity: 0.8;
 }
 
-.buttons {
+.navButtonsContainer {
   display: flex;
   gap: 15px;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .btn {
@@ -88,10 +88,144 @@
   color: var(--color-primary);
 }
 
+/* Adicione este código ao seu arquivo CSS */
+
+.btnCarrinho {
+  /* Usamos flexbox para alinhar o ícone e o texto facilmente */
+  display: inline-flex;
+  align-items: center;
+  gap: 8px; /* Espaçamento entre o ícone e o texto */
+}
+
+.iconeCarrinho {
+  /* Define o tamanho do ícone */
+  width: 20px;
+  height: 20px;
+
+  /* Imagem padrão do carrinho */
+  background-image: url("../../assets/icones/carrinho-de-compras.png");
+
+  /* Configurações para a imagem de fundo */
+  background-repeat: no-repeat;
+  background-size: contain; /* Garante que a imagem caiba no espaço */
+  background-position: center;
+
+  /* Adiciona a mesma transição para suavizar a troca */
+  transition: 0.3s;
+}
+
+/* A MÁGICA ACONTECE AQUI */
+.btnCarrinho:hover .iconeCarrinho {
+  /* Nova imagem quando o mouse está sobre o botão */
+  background-image: url("../../assets/icones/carrinho-de-compras-hover.png");
+}
+
 .loading {
   color: var(--color-primary);
   text-align: center;
   margin-top: 50px;
+}
+
+.filtersContainer {
+  display: flex;
+  flex-wrap: wrap; /* Permite que os itens quebrem para a linha de baixo em telas menores */
+  background-color: var(--bg-body);
+  align-items: start;
+  margin: 5px;
+}
+
+/* --- Estilos para Input de Busca e Select de Categoria --- */
+.selectFilter {
+  flex: 1;
+  min-width: 200px;
+  font-size: 14px;
+  padding: 5px;
+  color: var(--color-text);
+  background-color: var(--bg-page);
+  border: 1px solid var(--border-color);
+  box-shadow: inset 0px 0px 20px 5px var(--shadow-color-inputs);
+  border-radius: 6px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  appearance: none;
+}
+
+/* Adiciona uma seta personalizada para o select */
+.selectFilter {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px 12px;
+  padding-right: 2.5rem; /* Espaço para a seta não sobrepor o texto */
+}
+
+/* Efeito de foco para input e select */
+.searchInput:focus,
+.selectFilter:focus {
+  border-color: #80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/* --- Container para os Filtros de Seleção (Categoria e Preço) --- */
+.filterSelectContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  flex: 2; /* Faz com que esta área ocupe mais espaço que o input de busca */
+}
+
+/* --- Container do Filtro de Preço --- */
+.priceRangeContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+  flex: 1;
+}
+
+.priceRangeContainer label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #c4c4c4;
+  text-align: center;
+}
+
+/* Container para os dois sliders */
+.rangeSliders {
+  display: flex;
+  gap: 10px;
+}
+
+/* --- Estilo para os Inputs de Faixa (Range) --- */
+.rangeInput {
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  background: var(--bg-page);
+  border-radius: 5px;
+  box-shadow: inset 0px 0px 20px 5px var(--shadow-color-inputs);
+  outline: none;
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.rangeInput:hover {
+  opacity: 1;
+}
+
+/* Estilo dabolinha que se arrasta */
+.rangeInput::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  margin-top: -6px; /* Ajuste para centralizar o polegar na trilha */
 }
 
 .productsGrid {

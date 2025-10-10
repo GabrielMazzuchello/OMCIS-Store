@@ -1,6 +1,6 @@
 :root {
   /* Cores principais */
-  --color-text: aliceblue;
+  --color-text: #c2e0f9;
   --color-primary: #63debe;
 
   /* Backgrounds */
@@ -10,6 +10,7 @@
   /* Bordas e sombras */
   --border-color: #334155;
   --shadow-color: #222b37;
+  --shadow-color-inputs: #334155;
 }
 
 *,

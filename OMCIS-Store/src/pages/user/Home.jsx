@@ -3,7 +3,8 @@ import { collection, onSnapshot } from "firebase/firestore";
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { db } from "../../services/firebase";
-import styles from "./Home.module.css"; // Assumindo que você tem classes CSS para estilização
+import styles from "./Home.module.css";
+import carrinhoIcon from "../../assets/icones/carrinho-de-compras.png";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -109,27 +110,42 @@ export default function Home() {
     <div className={styles.container}>
       <header className={styles.header}>
         <h1 className={styles.title}>Oh my computer is sick!</h1>
-        <div className={styles.buttons}>
-          {!currentUser ? (
-            <button className={styles.btn} onClick={() => navigate("/Auth")}>
-              Login
+        <div className={styles.navButtonsContainer}>
+          <div className={styles.navButtonsLeft}>
+            <button
+              className={`${styles.btn} ${styles.btnCarrinho}`}
+              style={{ padding: "7px 15px 7px 15px" }}
+            >
+              <span className={styles.iconeCarrinho}></span>{" "}
             </button>
-          ) : (
-            <>
-              <button className={styles.btn} onClick={handleLogout}>
-                Logout
+          </div>
+          <div className={styles.navButtonsRight}>
+            {!currentUser ? (
+              <button className={styles.btn} onClick={() => navigate("/Auth")}>
+                Login
               </button>
-              {isAdmin && (
-                <button
-                  className={styles.btn}
-                  onClick={() => navigate("/admin")}
-                >
-                  Área Admin
+            ) : (
+              <>
+                <button className={styles.btn} onClick={handleLogout}>
+                  Logout
                 </button>
-              )}
-            </>
-          )}
+                <> </>
+                {isAdmin && (
+                  <button
+                    className={styles.btn}
+                    onClick={() => navigate("/admin")}
+                  >
+                    Área Admin
+                  </button>
+                )}
+              </>
+            )}
+          </div>
         </div>
+
+        {/* <div className={styles.buttons}>
+          
+        </div> */}
       </header>
 
       {/* --- Seção de Filtros --- */}
@@ -198,9 +214,9 @@ export default function Home() {
       </div>
       {/* ------------------------- */}
 
-      <p className={styles.resultCount}>
+      {/* <p className={styles.resultCount}> exibe quantos produtos foi encontrado (debug)
         {filteredProducts.length} Produto(s) encontrado(s)
-      </p>
+      </p> */}
 
       <main className={styles.productsGrid}>
         {/* Itera sobre os PRODUTOS FILTRADOS */}
