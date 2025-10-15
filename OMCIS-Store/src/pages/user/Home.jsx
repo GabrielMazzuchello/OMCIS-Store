@@ -5,12 +5,15 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../../services/firebase";
 import styles from "./Home.module.css";
 import carrinhoIcon from "../../assets/icones/carrinho-de-compras.png";
+import CartDrawer from "../../components/CartDrawer";
 
 export default function Home() {
   const navigate = useNavigate();
   const { currentUser, loading, logout } = useAuth();
   const [isAdmin, setIsAdmin] = useState(null);
   const [products, setProducts] = useState([]);
+  const [cart, setCart] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   // --- Estados para os Filtros ---
   const [searchTerm, setSearchTerm] = useState("");
@@ -106,6 +109,22 @@ export default function Home() {
     return <p className={styles.loading}>Carregando...</p>;
   }
 
+  const AddToCart = (productToAdd) => {
+    setCart((prevCart) => [...cart, productToAdd]);
+    // console.log("Produto adicionado:", productToAdd); mostra o produto que foi add e o array inteiro
+    // console.log("Carrinho atual:", [...cart, productToAdd]);
+  };
+
+  const openCart = () => {
+    setIsCartOpen(true);
+    console.log(isCartOpen);
+  };
+
+  const closeCart = () => {
+    setIsCartOpen(false);
+    console.log(isCartOpen);
+  };
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -115,8 +134,9 @@ export default function Home() {
             <button
               className={`${styles.btn} ${styles.btnCarrinho}`}
               style={{ padding: "7px 15px 7px 15px" }}
+              onClick={() => openCart()}
             >
-              <span className={styles.iconeCarrinho}></span>{" "}
+              <span className={styles.iconeCarrinho}></span> {cart.length}
             </button>
           </div>
           <div className={styles.navButtonsRight}>
@@ -142,10 +162,6 @@ export default function Home() {
             )}
           </div>
         </div>
-
-        {/* <div className={styles.buttons}>
-          
-        </div> */}
       </header>
 
       {/* --- Seção de Filtros --- */}
@@ -214,10 +230,6 @@ export default function Home() {
       </div>
       {/* ------------------------- */}
 
-      {/* <p className={styles.resultCount}> exibe quantos produtos foi encontrado (debug)
-        {filteredProducts.length} Produto(s) encontrado(s)
-      </p> */}
-
       <main className={styles.productsGrid}>
         {/* Itera sobre os PRODUTOS FILTRADOS */}
         {filteredProducts.map((prod) => (
@@ -236,7 +248,10 @@ export default function Home() {
                   currency: "BRL",
                 })}
               </p>
-              <button className={styles.addToCartBtn}>
+              <button
+                className={styles.addToCartBtn}
+                onClick={() => AddToCart(prod)}
+              >
                 Adicionar ao Carrinho
               </button>
             </div>
@@ -247,6 +262,7 @@ export default function Home() {
           <p className={styles.noResults}>Nenhum produto encontrado.</p>
         )}
       </main>
+      <CartDrawer isOpen={isCartOpen} onClose={closeCart} cartItems={cart} />
     </div>
   );
 }
