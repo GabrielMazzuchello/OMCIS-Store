@@ -1,51 +1,46 @@
-# .github/workflows/deploy.yml
-
 name: Deploy to GitHub Pages
 
-# Roda quando um push é feito para a branch 'main'
 on:
-  push:
-    branches: [ "main" ]
+    push:
+        branches: ["main"]
 
-# Permite que o script escreva na branch gh-pages
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+    contents: read
+    pages: write
+    id-token: write
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      # 1. Pega o seu código-fonte
-      - name: Checkout
-        uses: actions/checkout@v4
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      # 2. Configura o Node.js
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18 # Use a versão do Node que você usa
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 18
 
-      # 3. Instala as dependências
-      - name: Install dependencies
-        run: npm install
+            # 2. DIGA AO NPM ONDE SEU PROJETO ESTÁ
+            - name: Install dependencies
+              run: npm install
+              working-directory: ./OMCIS-Store # <-- ADICIONE AQUI
 
-      # 4. Roda o build (com o 'base' do seu vite.config.js)
-      - name: Build
-        run: npm run build
+            # 3. DIGA AO BUILD ONDE SEU PROJETO ESTÁ
+            - name: Build
+              run: npm run build
+              working-directory: ./OMCIS-Store # <-- ADICIONE AQUI
 
-      # 5. Configura o GitHub Pages
-      - name: Setup Pages
-        uses: actions/configure-pages@v4
+            - name: Setup Pages
+              uses: actions/configure-pages@v4
 
-      # 6. Sobe os arquivos da pasta 'dist' para o GitHub Pages
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: './dist'
+            # 4. DIGA AO UPLOAD ONDE ESTÁ A PASTA 'dist'
+            - name: Upload artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  # O caminho agora é relativo à subpasta
+                  path: "./OMCIS-Store/dist" # <-- CORRIJA O CAMINHO AQUI
 
-      # 7. Faz o deploy
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+            - name: Deploy to GitHub Pages
+              id: deployment
+              uses: actions/deploy-pages@v4
