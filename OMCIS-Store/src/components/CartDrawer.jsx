@@ -62,7 +62,6 @@ const CartSummary = ({ cartItems, onNext, onUpdateQuantity, onRemoveItem }) => {
         ))}
       </ul>
 
-      {/* A lista, o total e o botão só aparecem se o carrinho tiver itens */}
       <div className={styles.cartTotal}>
         <span>Total</span>
         <span>
@@ -239,15 +238,11 @@ function CartDrawer({
           />
         );
       case "payment":
-        // <-- MUDANÇA 7: Criar um 'handler' para o botão de finalizar
         const handleFinishPurchase = async () => {
           try {
-            // Chama a função que veio do Home.js
             await onFinalizePurchase(addressData);
-            // Se der certo, avança para a confirmação
             setCheckoutStep("confirmation");
           } catch (error) {
-            // Se der erro, mostra o alerta
             alert(error.message);
           }
         };
@@ -255,7 +250,7 @@ function CartDrawer({
         return (
           <PaymentForm
             onBack={() => setCheckoutStep("address")}
-            onFinish={handleFinishPurchase} // Passa o novo handler
+            onFinish={handleFinishPurchase} 
           />
         );
       case "confirmation":
@@ -266,7 +261,6 @@ function CartDrawer({
             cartItems={cartItems}
             onNext={() => setCheckoutStep("address")}
             onUpdateQuantity={onUpdateQuantity}
-            // <-- MUDANÇA 8: Adicionar as props que faltavam no 'default'
             onRemoveItem={onRemoveItem}
           />
         );
