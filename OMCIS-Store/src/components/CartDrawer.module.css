@@ -1,0 +1,353 @@
+/* src/components/CartDrawer.module.css */
+
+/* O Fundo Escurecido (Overlay) */
+.overlay {
+  position: fixed; /* A propriedade MAIS IMPORTANTE! Tira do fluxo normal. */
+  top: 0;
+  left: 0;
+  width: 100vw; /* 100% da largura da tela */
+  height: 100vh; /* 100% da altura da tela */
+  background-color: rgba(
+    11,
+    15,
+    23,
+    0.6
+  ); /* Usa seu --bg-body com 60% de opacidade */
+  backdrop-filter: blur(2px); /* Efeito de desfoque no fundo, super moderno */
+  z-index: 1000; /* Garante que fique acima de todo o resto */
+
+  display: flex;
+  justify-content: flex-start; /* Alinha a gaveta na esquerda */
+}
+
+/* A Gaveta em si */
+.cartDrawer {
+  width: 100%;
+  max-width: 400px; /* Define uma largura máxima */
+  height: 100%;
+  background-color: var(--bg-page); /* Cor de fundo da sua página */
+  color: var(--color-text); /* Cor do texto principal */
+  box-shadow: 4px 0px 15px var(--shadow-color); /* Sombra com sua cor */
+
+  display: flex;
+  flex-direction: column;
+
+  /* Animação de entrada */
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Animação que faz a gaveta deslizar da esquerda para a direita */
+@keyframes slideIn {
+  from {
+    transform: translateX(
+      -100%
+    ); /* Começa totalmente fora da tela à esquerda */
+  }
+  to {
+    transform: translateX(0); /* Termina na sua posição normal */
+  }
+}
+
+/* --- Estilos para o conteúdo interno da Gaveta --- */
+
+.cartHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cartHeader h2 {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 1.5rem;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  font-size: 2.5rem;
+  color: var(--color-text);
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.closeBtn:hover {
+  color: var(--color-primary);
+  transform: rotate(90deg);
+}
+
+.cartBody {
+  flex-grow: 1; /* Faz o corpo ocupar todo o espaço vertical disponível */
+  padding: 1.5rem;
+  overflow-y: auto; /* Adiciona scroll se os itens não couberem */
+}
+
+.cartBody ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cartItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.cartItem span:last-child {
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.cartFooter {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-body);
+}
+
+.checkoutBtn {
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--color-primary);
+  color: var(--bg-body);
+  border: none;
+  border-radius: 5px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.checkoutBtn:hover {
+  background-color: #82e9ca; /* Um tom um pouco mais claro do seu primário */
+}
+
+/* --- Estilos para o Resumo do Pedido (Etapa 1) --- */
+
+/* Ajuste no .cartItem para alinhar verticalmente */
+.cartItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Alinha a imagem e o preço verticalmente */
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.itemImage {
+  width: 60px; /* Largura da imagem pequena */
+  height: 60px; /* Altura da imagem pequena */
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+}
+
+.itemName {
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.itemPrice {
+  font-weight: bold;
+  color: var(--color-primary);
+  font-size: 1rem;
+  white-space: nowrap; /* Impede que o preço quebre a linha */
+  margin-left: 1rem;
+}
+
+.cartTotal {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--color-text);
+  padding: 1.5rem 0;
+  margin-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.cartTotal span:last-child {
+  color: var(--color-primary);
+}
+
+/* --- Estilos para Formulários (Etapa 2 & 3) --- */
+
+.inputField {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--color-text);
+  font-size: 1rem;
+  box-sizing: border-box; /* Garante que o padding não estoure a largura */
+}
+
+.inputField::placeholder {
+  color: #94a3b8; /* Um cinza-azulado para o placeholder */
+}
+
+.inputField:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(99, 222, 190, 0.3); /* Sombra de foco com sua cor */
+}
+
+.navigationButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.backBtn {
+  flex-grow: 1; /* Ocupa o espaço disponível */
+  padding: 1rem;
+  background-color: transparent;
+  color: var(--color-text);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.backBtn:hover {
+  background-color: var(--shadow-color);
+  border-color: var(--color-text);
+}
+
+/* Ajuste no .checkoutBtn para funcionar ao lado do .backBtn */
+.navigationButtons .checkoutBtn {
+  flex-grow: 2; /* Faz o botão de "prosseguir" ser maior */
+}
+
+/* ======================================================== */
+/* === NOVOS ESTILOS (Adicione ao final do arquivo) === */
+/* ======================================================== */
+
+.cartList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* Modificação no .cartItem para melhor layout */
+.cartItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* Espaço entre os elementos */
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.itemImage {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0; /* Impede que a imagem encolha */
+}
+
+.itemDetails {
+  flex-grow: 1; /* Ocupa o espaço disponível */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.itemName {
+  font-size: 1rem;
+  color: var(--color-text);
+  font-weight: bold;
+}
+
+.itemPriceAndRemove {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* Alinha preço e botão à direita */
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.itemPrice {
+  font-weight: bold;
+  color: var(--color-primary);
+  font-size: 1rem;
+  white-space: nowrap;
+}
+
+.removeItemBtn {
+  background: none;
+  border: none;
+  color: #94a3b8; /* Cor de texto suave */
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+
+.removeItemBtn:hover {
+  color: #f87171; /* Vermelho ao passar o mouse */
+}
+
+/* --- Estilos dos Controles de Quantidade --- */
+.quantitySelector {
+  display: flex;
+  align-items: center;
+  background-color: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  width: fit-content; /* Faz o wrapper se ajustar ao conteúdo */
+}
+
+.quantityBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0.25rem 0.75rem;
+}
+
+.quantityBtn:hover {
+  background-color: var(--shadow-color);
+}
+
+.quantityDisplay {
+  padding: 0 0.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  color: var(--color-text);
+  min-width: 20px;
+  text-align: center;
+}
+
+.checkoutBtn:disabled {
+  background-color: #94a3b8;
+  color: var(--border-color);
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.checkoutBtn:disabled:hover {
+  background-color: var(--shadow-color-inputs);
+}
+
+.emptyCartMessage {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--color-text);
+  opacity: 0.7;
+  padding: 3rem 1rem;
+}
