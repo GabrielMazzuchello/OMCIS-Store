@@ -15,7 +15,7 @@ import AdminRoute from "./routes/AdminRoute";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/OMCIS-Store">
       <AuthProvider>
         <Routes>
           {/* Públicas */}
