@@ -218,7 +218,7 @@ const Produtos = () => {
             <label>Estoque mínimo</label>
             <input name="minEstoque" type="number" className={styles.input} />
 
-            <label>Quantidade</label>
+            <label>Estoque</label>
             <input name="quantidade" type="number" className={styles.input} />
 
             {/* Imagem */}
