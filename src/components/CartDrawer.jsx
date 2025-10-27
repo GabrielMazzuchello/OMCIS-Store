@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import styles from "./CartDrawer.module.css";
+import Modal from "../components/Modal";
 
-const CartSummary = ({ cartItems, onNext, onUpdateQuantity, onRemoveItem }) => {
+const CartSummary = ({
+  cartItems,
+  onNext,
+  onUpdateQuantity,
+  onAbrirModalRemover,
+}) => {
   if (cartItems.length === 0) {
     return (
       <div>
@@ -53,7 +59,7 @@ const CartSummary = ({ cartItems, onNext, onUpdateQuantity, onRemoveItem }) => {
               </span>
               <button
                 className={styles.removeItemBtn}
-                onClick={() => onRemoveItem(item.id)}
+                onClick={() => onAbrirModalRemover(item)}
               >
                 &times;
               </button>
@@ -208,6 +214,15 @@ function CartDrawer({
     complemento: "",
   });
 
+  const [modal, setModal] = useState({ tipo: null, data: null });
+  const abrirModalRemover = (item) => {
+    setModal({ tipo: "remover", data: item });
+  };
+
+  const abrirFeedback = (titulo, mensagem) => {
+    setModal({ tipo: "feedback", data: { titulo, mensagem } });
+  };
+
   if (!isOpen) {
     return null;
   }
@@ -225,7 +240,7 @@ function CartDrawer({
             cartItems={cartItems}
             onNext={() => setCheckoutStep("address")}
             onUpdateQuantity={onUpdateQuantity}
-            onRemoveItem={onRemoveItem}
+            onAbrirModalRemover={abrirModalRemover}
           />
         );
       case "address":
@@ -243,14 +258,14 @@ function CartDrawer({
             await onFinalizePurchase(addressData);
             setCheckoutStep("confirmation");
           } catch (error) {
-            alert(error.message);
+            abrirFeedback("Erro ao Finalizar", error.message);
           }
         };
 
         return (
           <PaymentForm
             onBack={() => setCheckoutStep("address")}
-            onFinish={handleFinishPurchase} 
+            onFinish={handleFinishPurchase}
           />
         );
       case "confirmation":
@@ -277,6 +292,53 @@ function CartDrawer({
           </button>
         </div>
         <div className={styles.cartBody}>{renderStepContent()}</div>
+        {/* ----- Modal de Remover Item ----- */}
+        {modal.tipo === "remover" && (
+          <Modal titulo="Remover Item" onClose={() => setModal({ tipo: null })}>
+            <p>
+              Tem certeza que deseja remover "{modal.data.nome}" do carrinho?
+            </p>
+            {/* Use os estilos de Categoria.module.css */}
+            <div className={styles.actions}>
+              <button
+                className={styles.btnCancel} // Estilo de Categoria
+                onClick={async () => {
+                  onRemoveItem(modal.data.id); // <-- AQUI CHAMA A AÇÃO REAL
+                  setModal({ tipo: null }); // Fecha o modal
+                }}
+              >
+                Remover
+              </button>
+              <button
+                className={styles.btnConfirm} // Estilo de Categoria
+                onClick={() => setModal({ tipo: null })}
+              >
+                Cancelar
+              </button>
+            </div>
+          </Modal>
+        )}
+
+        {/* ----- Modal de Feedback/Erro ----- */}
+        {modal.tipo === "feedback" && (
+          <Modal
+            titulo={modal.data.titulo}
+            onClose={() => setModal({ tipo: null })}
+          >
+            <p>{modal.data.mensagem}</p>
+            <div
+              className={styles.actions}
+              style={{ justifyContent: "center" }}
+            >
+              <button
+                className={styles.btnConfirm} // Estilo de Categoria
+                onClick={() => setModal({ tipo: null })}
+              >
+                OK
+              </button>
+            </div>
+          </Modal>
+        )}
       </div>
     </div>
   );

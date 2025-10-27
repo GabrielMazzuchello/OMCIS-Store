@@ -14,7 +14,7 @@ import { AuthProvider } from "./context/AuthContext";
 import AdminRoute from "./routes/AdminRoute";
 
 function App() {
-  // const basename = import.meta.env.MODE === "producyion" ? "/OMCIS-Store" : "/";
+  // const basename = import.meta.env.MODE === "production" ? "/OMCIS-Store" : "/";
   return (
     <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AuthProvider>
