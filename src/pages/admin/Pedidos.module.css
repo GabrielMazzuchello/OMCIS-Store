@@ -1,0 +1,242 @@
+.adminContainer {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: var(--color-text); 
+}
+
+.adminContainer h1 {
+  border-bottom: 2px solid var(--border-color); 
+  padding-bottom: 0.5rem;
+  color: var(--color-primary); 
+}
+
+.loadingText {
+  padding: 2rem;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+/* --- Estilos dos Filtros (Toggle Switch) --- */
+.filterContainer {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+  padding: 1rem;
+  background-color: var(--bg-page); 
+  border-radius: 8px;
+  border: 1px solid var(--border-color); 
+}
+
+.toggleSwitch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  cursor: pointer;
+}
+
+.toggleSwitch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggleLabel {
+  margin-left: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text); 
+  user-select: none;
+}
+
+.slider {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background-color: var(--shadow-color-inputs); 
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--color-text); 
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.toggleSwitch input:checked + .slider {
+  background-color: var(--color-primary); 
+}
+
+.toggleSwitch input:checked + .slider:before {
+  transform: translateX(20px);
+  background-color: var(--bg-page); 
+}
+
+/* --- Estilos da Lista/Tabela --- */
+.ordersTable {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 8px var(--shadow-color); 
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--bg-page); 
+}
+
+.ordersTable th,
+.ordersTable td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-color); 
+}
+
+.ordersTable th {
+  background-color: var(--bg-body); 
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: var(--color-text);
+  opacity: 0.8;
+}
+
+.orderRow {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.orderRow:hover {
+  background-color: var(--shadow-color); 
+}
+
+.statusBadge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: var(--bg-body); 
+}
+
+.statusBadge.pago {
+  background-color: #28a745; 
+}
+.statusBadge.enviado {
+  background-color: #fd7e14;
+}
+.statusBadge.entregue {
+  background-color: #17a2b8; 
+}
+
+.noOrdersMessage {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: var(--color-text); 
+  opacity: 0.7;
+}
+
+.modalBody {
+  padding-top: 0;
+  max-height: 60vh;
+  overflow-y: auto; 
+}
+
+.customerInfo {
+  background: var(--bg-body);
+  padding: 1rem;
+  border-radius: 5px;
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+.customerInfo h3 {
+  margin-top: 0;
+  color: var(--color-primary);
+}
+.customerInfo p {
+  margin: 0.3rem 0;
+  color: var(--color-text);
+  opacity: 0.9;
+}
+
+.modalProductList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modalProductItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.modalProductItem:last-child {
+  border-bottom: none;
+}
+
+.modalProductImage {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.modalProductDetails {
+  flex-grow: 1;
+}
+
+.modalProductName {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+  color: var(--color-text);
+}
+
+.modalProductTotal {
+  font-weight: bold;
+  font-size: 1.1rem;
+  color: var(--color-primary);
+}
+
+.modalFooter {
+  padding: 1rem 0;
+  border-top: 1px solid var(--border-color);
+  background-color: transparent;
+  margin-top: 1rem;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.modalActions button {
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  color: var(--bg-body);
+}
+
+.actionBtnEnv {
+  background-color: #fd7e14; 
+}
+.actionBtnEnt {
+  background-color: #17a2b8;
+}
+
+.modalActions button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
