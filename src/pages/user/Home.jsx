@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../../services/firebase";
 import styles from "./Home.module.css";
 import CartDrawer from "../../components/CartDrawer";
+import Modal from "../../components/Modal"
 
 export default function Home() {
   const navigate = useNavigate();

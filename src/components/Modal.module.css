@@ -52,6 +52,7 @@
   flex-direction: column;
   gap: 12px;
   width: 100%;
+  align-items: center;
 }
 
 .content form {
