@@ -160,7 +160,7 @@ export default function Pedidos() {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const [filterStatus, setFilterStatus] = useState({
-    Pago: true,
+    pago: true,
     Enviado: true,
     Entregue: false,
   });
