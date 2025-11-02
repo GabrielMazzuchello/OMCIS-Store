@@ -211,6 +211,18 @@
   border-color: var(--color-text);
 }
 
+.btnCancel {
+  height: 30px;
+  width: 90px;
+  padding: 8px 16px;
+  background-color: crimson;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #fff;
+}
+
 .navigationButtons .checkoutBtn {
   flex-grow: 2; 
 }

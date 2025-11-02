@@ -309,12 +309,6 @@ function CartDrawer({
               >
                 Remover
               </button>
-              <button
-                className={styles.btnConfirm} // Estilo de Categoria
-                onClick={() => setModal({ tipo: null })}
-              >
-                Cancelar
-              </button>
             </div>
           </Modal>
         )}
