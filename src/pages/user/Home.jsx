@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { db } from "../../services/firebase";
 import styles from "./Home.module.css";
 import CartDrawer from "../../components/CartDrawer";
-import Modal from "../../components/Modal"
+import Modal from "../../components/Modal"; // Importação já estava aqui
 
 export default function Home() {
   const navigate = useNavigate();
@@ -28,15 +28,22 @@ export default function Home() {
   const [minPrice, setMinPrice] = useState(1);
   const [maxPrice, setMaxPrice] = useState(1000);
 
+  // --- MUDANÇA 1: Adicionar estado para o modal de alerta ---
+  const [modalInfo, setModalInfo] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    onCloseCallback: null, // Para lidar com o redirecionamento
+  });
+
+  // ... (useEffect de produtos, filteredProducts, categories, handleLogout, useEffect de admin não mudam) ...
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "produtos"), (snapshot) => {
       const activeProducts = snapshot.docs
         .map((d) => ({ id: d.id, ...d.data() }))
         .filter((product) => product.status !== false && product.quantidade > 0);
-
       setProducts(activeProducts);
     });
-
     return () => unsub();
   }, []);
 
@@ -101,8 +108,13 @@ export default function Home() {
     const existingItem = cart.find((item) => item.id === productToAdd.id);
     if (existingItem) {
       const newQuantity = existingItem.quantity + 1;
-      if (newQuantity > productToAdd.quantidade) { 
-        alert("Desculpe, você atingiu a quantidade máxima em estoque.");
+      if (newQuantity > productToAdd.quantidade) {
+        // --- MUDANÇA 2: Substituir alert por modal ---
+        setModalInfo({
+          isOpen: true,
+          title: "Estoque Insuficiente",
+          message: "Desculpe, você atingiu a quantidade máxima em estoque para este item."
+        });
         return;
       }
       setCart(
@@ -113,8 +125,13 @@ export default function Home() {
         )
       );
     } else {
-      if (1 > productToAdd.quantidade) { 
-        alert("Desculpe, este produto está fora de estoque.");
+      if (1 > productToAdd.quantidade) {
+        // --- MUDANÇA 3: Substituir alert por modal ---
+        setModalInfo({
+          isOpen: true,
+          title: "Fora de Estoque",
+          message: "Desculpe, este produto está fora de estoque no momento."
+        });
         return;
       }
       setCart([...cart, { ...productToAdd, quantity: 1 }]);
@@ -124,7 +141,12 @@ export default function Home() {
   const handleUpdateQuantity = (productId, newQuantity) => {
     const itemToUpdate = cart.find((item) => item.id === productId);
     if (newQuantity > itemToUpdate.quantidade) {
-      alert("Quantidade máxima em estoque atingida.");
+      // --- MUDANÇA 4: Substituir alert por modal ---
+      setModalInfo({
+        isOpen: true,
+        title: "Estoque Insuficiente",
+        message: "Você já atingiu a quantidade máxima em estoque para este item."
+      });
       return;
     }
     if (newQuantity <= 0) {
@@ -143,18 +165,28 @@ export default function Home() {
   };
 
   const handleFinalizePurchase = async (addressData) => {
-    
     if (!currentUser) {
-      alert("Você precisa estar logado para finalizar a compra.");
-      navigate("/Auth");
+      // --- MUDANÇA 5: Substituir alert por modal (com callback) ---
+      setModalInfo({
+        isOpen: true,
+        title: "Acesso Negado",
+        message: "Você precisa estar logado para finalizar a compra. Você será redirecionado para a tela de login.",
+        onCloseCallback: () => navigate("/Auth") // Callback para navegar ao fechar
+      });
       throw new Error("Usuário não logado");
     }
 
     if (cart.length === 0) {
-      alert("Seu carrinho está vazio.");
+      // --- MUDANÇA 6: Substituir alert por modal ---
+      setModalInfo({
+        isOpen: true,
+        title: "Carrinho Vazio",
+        message: "Seu carrinho está vazio. Adicione produtos antes de finalizar a compra."
+      });
       throw new Error("Carrinho vazio");
     }
 
+    // ... (resto da lógica de finalização) ...
     const produtosParaPedido = cart.map((item) => ({
       id: item.id,
       nome: item.nome,
@@ -162,19 +194,15 @@ export default function Home() {
       quantidade: item.quantity, 
       precoUnitario: item.preco,
     }));
-
     const valorTotal = cart.reduce(
       (acc, item) => acc + item.preco * item.quantity,
       0
     );
-
     const newOrder = {
       userId: currentUser.uid,
-      userEmail: currentUser.email,     
-
+      userEmail: currentUser.email,
       produtos: produtosParaPedido,
       valorTotal: valorTotal,
-      
       endereco: {
         telefone: addressData.telefone,
         cep: addressData.cep,
@@ -186,24 +214,22 @@ export default function Home() {
       status: "pago",
       createdAt: serverTimestamp(),
     };
-
     try {
       const batch = writeBatch(db);
       const orderRef = doc(collection(db, "pedidos"));
       batch.set(orderRef, newOrder);
-
       for (const item of cart) {
         const productRef = doc(db, "produtos", item.id);
         batch.update(productRef, {
           quantidade: increment(-item.quantity),
         });
       }
-
       await batch.commit();
-      setCart([]); // Limpa o carrinho
-      
+      setCart([]);
     } catch (error) {
       console.error("Erro ao finalizar a compra:", error);
+      // Este erro é capturado pelo CartDrawer, que (atualmente) mostra seu próprio alerta.
+      // Para mudar isso, teríamos que modificar o CartDrawer também.
       throw new Error("Falha ao processar o pedido. Tente novamente.");
     }
   };
@@ -216,9 +242,17 @@ export default function Home() {
     setIsCartOpen(false);
   };
 
+  const closeModal = () => {
+    if (modalInfo.onCloseCallback) {
+      modalInfo.onCloseCallback();
+    }
+    setModalInfo({ isOpen: false, title: "", message: "", onCloseCallback: null });
+  };
+
+
   return (
     <div className={styles.container}>
-      <header className={styles.header}>
+      <header className={styles.header}>''
         <h1 className={styles.title}>Oh my computer is sick!</h1>
         <div className={styles.navButtonsContainer}>
           <div className={styles.navButtonsLeft}>
@@ -316,7 +350,8 @@ export default function Home() {
         </div>
       </div>
 
-      <div className={styles.filtersContainer}></div>
+      <div className={styles.filtersContainer}>{/* Seus filtros aqui */}</div>
+      
       <main className={styles.productsGrid}>
         {filteredProducts.map((prod) => (
           <div key={prod.id} className={styles.productCard}>
@@ -356,6 +391,12 @@ export default function Home() {
         onRemoveItem={handleRemoveFromCart}
         onFinalizePurchase={handleFinalizePurchase}
       />
+
+      {modalInfo.isOpen && (
+        <Modal titulo={modalInfo.title} onClose={closeModal}>
+          <p>{modalInfo.message}</p>
+        </Modal>
+      )}
     </div>
   );
 }

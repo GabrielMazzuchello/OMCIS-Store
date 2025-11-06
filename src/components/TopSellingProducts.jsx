@@ -1,23 +1,20 @@
-// src/pages/admin/TopSellingProducts.js
+// src/components/TopSellingProducts.js
 
 import React, { useState, useMemo } from "react";
-import DatePicker from "react-datepicker"; // Importa o seletor de data
-import "react-datepicker/dist/react-datepicker.css"; // CSS obrigatório do datepicker
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { subDays, startOfDay, endOfDay } from "date-fns";
-import styles from "../pages/admin/Dashboard.module.css"; // Reutilizando o mesmo CSS
+import styles from "../pages/admin/Dashboard.module.css"; // Ajuste o caminho se necessário
 
 const TopSellingProducts = ({ orders, loading }) => {
-  // Estado para os filtros
-  const [startDate, setStartDate] = useState(subDays(new Date(), 30)); // Inicia com "Últimos 30 dias"
+  const [startDate, setStartDate] = useState(subDays(new Date(), 30));
   const [endDate, setEndDate] = useState(new Date());
   const [searchTerm, setSearchTerm] = useState("");
 
-  // Calcula os produtos mais vendidos usando useMemo
   const topSellers = useMemo(() => {
     // 1. Filtra os pedidos pelo intervalo de data selecionado
     const filteredOrders = orders.filter((o) => {
       const orderDate = o.createdAt;
-      // Garante que a comparação pegue o dia todo
       return (
         orderDate >= startOfDay(startDate) && orderDate <= endOfDay(endDate)
       );
@@ -37,22 +34,25 @@ const TopSellingProducts = ({ orders, loading }) => {
     }
 
     // 3. Transforma o Map em um Array e ordena
-    const sortedSellers = Array.from(productSales.values()).sort(
+    let sortedSellers = Array.from(productSales.values()).sort(
       (a, b) => b.totalSold - a.totalSold
     );
 
     // 4. Filtra pelo termo de pesquisa (se houver)
-    if (!searchTerm) {
-      return sortedSellers;
+    if (searchTerm) {
+      sortedSellers = sortedSellers.filter((p) =>
+        p.nome.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
-    return sortedSellers.filter((p) =>
-      p.nome.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }, [orders, startDate, endDate, searchTerm]); // Recalcula com qualquer mudança
+
+    // 5. MUDANÇA AQUI: Retorna apenas os 4 primeiros resultados
+    // Se quiser 3, é só mudar para .slice(0, 3)
+    return sortedSellers.slice(0, 4);
+  }, [orders, startDate, endDate, searchTerm]);
 
   return (
     <div className={styles.topSellersContainer}>
-      <h2>Produtos Mais Vendidos</h2>
+      <h2>Top 4 Produtos Mais Vendidos</h2>
 
       {/* Filtros de Data e Pesquisa */}
       <div className={styles.productFilters}>
@@ -112,3 +112,4 @@ const TopSellingProducts = ({ orders, loading }) => {
 };
 
 export default TopSellingProducts;
+ 
