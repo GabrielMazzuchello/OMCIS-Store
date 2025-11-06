@@ -6,7 +6,8 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import { auth } from "../../services/firebase";
+import { auth, db } from "../../services/firebase"; 
+import { setDoc, doc, serverTimestamp } from "firebase/firestore";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -22,7 +23,18 @@ const Auth = () => {
         await signInWithEmailAndPassword(auth, email, password);
         setError("✅ Login realizado com sucesso!");
       } else {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const user = userCredential.user;
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          email: user.email,
+          createdAt: serverTimestamp(), 
+        });
+
         setError("✅ Conta criada com sucesso!");
       }
       setTimeout(() => {

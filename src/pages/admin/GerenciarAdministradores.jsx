@@ -1,165 +1,227 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import styles from "./GerenciarAdministradores.module.css";
-// ALTERAÇÃO 2: Novos imports para a criação de usuário sem login
-import { initializeApp, deleteApp } from "firebase/app";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import Modal from "../../components/Modal";
 import {
   collection,
-  addDoc,
   onSnapshot,
   deleteDoc,
   doc,
   updateDoc,
   serverTimestamp,
+  setDoc,
 } from "firebase/firestore";
-// Adicionamos firebaseConfig ao import
-import { db, firebaseConfig } from "../../services/firebase";
+import { db } from "../../services/firebase";
 
 const GerenciarAdministradores = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [role, setRole] = useState("vendedor");
   const [admins, setAdmins] = useState([]);
+  const [users, setUsers] = useState([]);
+
+  const [masterUID, setMasterUID] = useState(null);
+
   const [search, setSearch] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const [modalConfig, setModalConfig] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+    onConfirm: () => {},
+  });
 
   useEffect(() => {
-    const unsub = onSnapshot(collection(db, "admins"), (snapshot) => {
-      const lista = snapshot.docs
-        .map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }))
-        // ALTERAÇÃO 1: Filtra para não exibir a role 'master'
-        .filter((admin) => admin.role !== "master");
+    setLoading(true);
 
-      setAdmins(lista);
+    const unsubAdmins = onSnapshot(collection(db, "admins"), (snapshot) => {
+      const allAdmins = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      const masterAdmin = allAdmins.find((admin) => admin.role === "master");
+      if (masterAdmin) {
+        setMasterUID(masterAdmin.uid);
+      }
+      const listaAdmins = allAdmins.filter((admin) => admin.role !== "master");
+
+      setAdmins(listaAdmins);
+    });
+    const unsubUsers = onSnapshot(collection(db, "users"), (snapshot) => {
+      const listaUsers = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setUsers(listaUsers);
     });
 
-    return () => unsub();
+    setLoading(false);
+
+    return () => {
+      unsubAdmins();
+      unsubUsers();
+    };
   }, []);
 
-  // ALTERAÇÃO 2: Função de criar admin modificada
-  const handleCreateAdm = async (e) => {
-    e.preventDefault();
-    const tempAppName = `temp-app-creation-${Date.now()}`;
-    const tempApp = initializeApp(firebaseConfig, tempAppName);
-    const tempAuth = getAuth(tempApp);
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(
-        tempAuth, // Usa a instância temporária
-        email,
-        password
+  const { currentAdmins, regularUsers } = useMemo(() => {
+    const adminUIDs = new Set(admins.map((admin) => admin.uid));
+    const filteredRegularUsers = users
+      .filter((user) => !adminUIDs.has(user.uid))
+      .filter((user) => user.uid !== masterUID)
+      .filter((user) =>
+        user.email.toLowerCase().includes(search.toLowerCase())
       );
 
-      await addDoc(collection(db, "admins"), {
-        uid: userCredential.user.uid,
-        email,
-        role,
-        createdAt: serverTimestamp(),
-      });
+    // Filtra a lista de admins (já não tem o master)
+    const filteredAdmins = admins.filter((admin) =>
+      admin.email.toLowerCase().includes(search.toLowerCase())
+    );
 
-      setEmail("");
-      setPassword("");
-      setRole("vendedor");
-      setShowModal(false);
-    } catch (error) {
-      console.error("Erro ao criar administrador:", error);
-    } finally {
-      // Limpa a instância temporária do app
-      await deleteApp(tempApp);
-    }
+    return {
+      currentAdmins: filteredAdmins,
+      regularUsers: filteredRegularUsers,
+    };
+  }, [admins, users, search, masterUID]);
+
+  const handlePromote = (user) => {
+    setModalConfig({
+      isOpen: true,
+      title: "Promover Usuário",
+      message: `Você tem certeza que deseja promover ${user.email} para "Vendedor"?`,
+      onConfirm: async () => {
+        await setDoc(doc(db, "admins", user.uid), {
+          uid: user.uid,
+          email: user.email,
+          role: "vendedor",
+          createdAt: serverTimestamp(),
+        });
+        closeModal();
+      },
+    });
   };
 
-  const handleDeleteAdm = async (id) => {
-    await deleteDoc(doc(db, "admins", id));
+  const handleDemote = (admin) => {
+    setModalConfig({
+      isOpen: true,
+      title: "Rebaixar Administrador",
+      message: `Você tem certeza que deseja remover as permissões de ${admin.email}?`,
+      onConfirm: async () => {
+        await deleteDoc(doc(db, "admins", admin.id));
+        closeModal();
+      },
+    });
   };
 
-  const handleUpdateRole = async (id, newRole) => {
-    await updateDoc(doc(db, "admins", id), { role: newRole });
+  const handleUpdateRole = async (adminId, newRole) => {
+    await updateDoc(doc(db, "admins", adminId), { role: newRole });
   };
 
-  const filteredAdmins = admins.filter((adm) =>
-    (adm.email || "").toLowerCase().includes(search.toLowerCase())
-  );
+  const closeModal = () => {
+    setModalConfig({
+      isOpen: false,
+      title: "",
+      message: "",
+      onConfirm: () => {},
+    });
+  };
 
   return (
     <div className={styles.page}>
-      {/* O resto do seu JSX permanece o mesmo */}
       <div className={styles.header}>
         <h3>Gerenciar Administradores</h3>
-        <button onClick={() => setShowModal(true)}>+ Novo Administrador</button>
       </div>
 
       <input
         type="text"
-        placeholder="Pesquisar admin..."
+        placeholder="Pesquisar por e-mail..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className={styles.search}
       />
 
+      {/* --- LISTA 1: ADMINISTRADORES ATUAIS --- */}
+      <div className={styles.header}>
+        <h4>Administradores Atuais ({currentAdmins.length})</h4>
+      </div>
       <div className={styles.list}>
-        {filteredAdmins.map((adm) => (
+        {loading && <p>Carregando...</p>}
+        {!loading && currentAdmins.length === 0 && (
+          <p>Nenhum administrador encontrado.</p>
+        )}
+        {currentAdmins.map((adm) => (
           <div key={adm.id} className={styles.adminCard}>
-            <p>{adm.email}</p>
-            <p>Role: {adm.role}</p>
-            <button onClick={() => handleUpdateRole(adm.id, "vendedor")}>
-              Vendedor
-            </button>
-            <button onClick={() => handleUpdateRole(adm.id, "estoque")}>
-              Estoque
-            </button>
-            <button onClick={() => handleDeleteAdm(adm.id)}>Excluir</button>
+            <p>
+              {adm.email} <span>({adm.role})</span>
+            </p>
+            <div className={styles.cardActions}>
+              <button
+                className={`${styles.btn} ${styles.btnVendedor}`}
+                onClick={() => handleUpdateRole(adm.id, "vendedor")}
+                disabled={adm.role === "vendedor"}
+              >
+                Vendedor
+              </button>
+              <button
+                className={`${styles.btn} ${styles.btnEstoque}`}
+                onClick={() => handleUpdateRole(adm.id, "estoque")}
+                disabled={adm.role === "estoque"}
+              >
+                Estoque
+              </button>
+              <button
+                className={`${styles.btn} ${styles.btnDemote}`}
+                onClick={() => handleDemote(adm)}
+              >
+                Rebaixar
+              </button>
+            </div>
           </div>
         ))}
       </div>
 
-      {showModal && (
-        <div className={styles.overlay}>
-          <div className={styles.modal}>
-            <h2>Novo Administrador</h2>
-            <form onSubmit={handleCreateAdm}>
-              <input
-                type="email"
-                placeholder="E-mail"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <input
-                type="password"
-                placeholder="Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              <div className={styles.roleBtns}>
-                <button
-                  type="button"
-                  className={role === "vendedor" ? styles.active : ""}
-                  onClick={() => setRole("vendedor")}
-                >
-                  Vendedor
-                </button>
-                <button
-                  type="button"
-                  className={role === "estoque" ? styles.active : ""}
-                  onClick={() => setRole("estoque")}
-                >
-                  Estoque
-                </button>
-              </div>
-              <div className={styles.modalActions}>
-                <button type="submit">Salvar</button>
-                <button type="button" onClick={() => setShowModal(false)}>
-                  Cancelar
-                </button>
-              </div>
-            </form>
+      {/* --- LISTA 2: USUÁRIOS COMUNS (para promover) --- */}
+      <div className={styles.header} style={{ marginTop: "30px" }}>
+        <h4>Usuários Comuns ({regularUsers.length})</h4>
+      </div>
+      <div className={styles.list}>
+        {loading && <p>Carregando...</p>}
+        {!loading && regularUsers.length === 0 && (
+          <p>Nenhum usuário comum encontrado.</p>
+        )}
+        {regularUsers.map((user) => (
+          <div key={user.id} className={styles.adminCard}>
+            <p>{user.email}</p>
+            <div className={styles.cardActions}>
+              <button
+                className={`${styles.btn} ${styles.btnPromote}`}
+                onClick={() => handlePromote(user)}
+              >
+                Promover
+              </button>
+            </div>
           </div>
-        </div>
+        ))}
+      </div>
+
+      {/* --- MODAL DE CONFIRMAÇÃO --- */}
+      {modalConfig.isOpen && (
+        <Modal titulo={modalConfig.title} onClose={closeModal}>
+          <p>{modalConfig.message}</p>
+          <div className={styles.modalActions}>
+            <button
+              type="button"
+              className={styles.btnCancel}
+              onClick={closeModal}
+            >
+              Cancelar
+            </button>
+            <button
+              type="button"
+              className={styles.btnConfirm}
+              onClick={modalConfig.onConfirm}
+            >
+              Confirmar
+            </button>
+          </div>
+        </Modal>
       )}
     </div>
   );

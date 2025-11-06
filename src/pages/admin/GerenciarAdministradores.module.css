@@ -1,9 +1,14 @@
+/* src/pages/admin/GerenciarAdministradores.module.css */
+
 .page {
   padding: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--bg-body); /* Cor aplicada */
-  color: var(--color-text); /* Cor aplicada */
+  background-color: var(--bg-body);
+  color: var(--color-text);
   border-radius: 15px;
+  /* Garante que o layout de duas listas funcione */
+  max-height: 100%;
+  overflow-y: auto;
 }
 
 /* Cabeçalho */
@@ -12,28 +17,21 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 16px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 10px;
 }
 
-.header h3 {
+.header h3,
+.header h4 {
   margin: 0;
   font-size: 1.4rem;
   font-weight: 600;
+  color: var(--color-primary);
 }
-
-.header button {
-  background-color: var(--color-primary); /* Cor aplicada */
-  color: #111; /* Melhor contraste com a cor primária */
-  border: none;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.header button:hover {
-  opacity: 0.85; /* Efeito de hover do segundo CSS */
+.header h4 {
+  font-size: 1.2rem;
+  color: var(--color-text);
+  opacity: 0.9;
 }
 
 /* Barra de pesquisa */
@@ -42,9 +40,9 @@
   box-sizing: border-box;
   padding: 10px 12px;
   margin-bottom: 18px;
-  border: 2px solid var(--border-color); /* Estilo e cor aplicados */
-  background-color: var(--bg-body); /* Cor aplicada */
-  color: var(--color-text); /* Cor aplicada */
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-body);
+  color: var(--color-text);
   border-radius: 8px;
   font-size: 0.95rem;
 }
@@ -61,132 +59,90 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #2a2a2a; /* Um pouco mais claro que o fundo para destacar */
-  border: 2px solid var(--border-color); /* Cor aplicada */
+  background: var(--bg-page); /* Cor de fundo da página */
+  border: 1px solid var(--border-color);
   border-radius: 10px;
   padding: 12px 16px;
-  box-shadow: 0 2px 8px var(--shadow-color); /* Sombra aplicada */
+  box-shadow: 0 2px 8px var(--shadow-color);
 }
 
 .adminCard p {
   margin: 0;
   font-size: 0.95rem;
-  color: var(--color-text); /* Cor aplicada */
+  color: var(--color-text);
   flex: 1;
 }
 
-/* Botões no card */
-.adminCard button {
-  margin-left: 6px;
+/* Container para os botões no card */
+.cardActions {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* --- MUDANÇA: Estilos de Botão Explícitos --- */
+.btn {
   padding: 6px 12px;
   border: none;
   border-radius: 8px;
   font-size: 0.85rem;
   font-weight: bold;
   cursor: pointer;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease, background-color 0.2s;
 }
 
-.adminCard button:hover {
-  opacity: 0.85;
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
-/* Botão Editar/Secundário */
-.adminCard button:nth-of-type(1) {
-  background-color: var(--color-secondary);
-  color: white;
-}
-
-/* Botão Principal/Aviso */
-.adminCard button:nth-of-type(2) {
+.btnPromote {
   background-color: var(--color-primary);
   color: #111;
 }
+.btnPromote:hover {
+  opacity: 0.85;
+}
 
-/* Botão Remover/Perigo */
-.adminCard button:nth-of-type(3) {
-  background-color: var(--color-danger);
+.btnVendedor,
+.btnEstoque {
+  background-color: var(--shadow-color-inputs);
+  color: var(--color-text);
+  border: 1px solid var(--border-color);
+}
+.btnVendedor:hover,
+.btnEstoque:hover {
+  background-color: var(--border-color);
+}
+.btnVendedor:disabled,
+.btnEstoque:disabled {
+  background-color: var(--color-primary);
+  color: #111;
+  border-color: var(--color-primary);
+  opacity: 1;
+}
+
+.btnDemote {
+  background-color: #a93c3c; /* Vermelho perigo */
   color: white;
 }
-
-/* Modal */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); /* Overlay um pouco mais escuro */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+.btnDemote:hover {
+  opacity: 0.85;
 }
 
-.modal {
-  background: var(--bg-body); /* Cor aplicada */
-  padding: 20px;
-  border-radius: 12px;
-  width: 380px;
-  max-width: 90%;
-  border: 2px solid var(--border-color); /* Borda para destacar */
-  box-shadow: 0 4px 15px var(--shadow-color); /* Sombra aplicada */
-}
+/* --- Modal (usado para confirmação) --- */
+/* Seus estilos de modal e overlay .css já existem no
+   componente Modal, então só precisamos estilizar as ações. */
 
-.modal h2 {
-  margin: 0 0 16px 0;
-  font-size: 1.2rem;
-  font-weight: 600;
-  color: var(--color-text); /* Cor aplicada */
-}
-
-/* Inputs do Modal */
-.modal input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-  border: 2px solid var(--border-color); /* Cor e estilo aplicados */
-  background-color: #2a2a2a; /* Fundo do input */
-  color: var(--color-text); /* Cor aplicada */
-  border-radius: 8px;
-  font-size: 0.95rem;
-}
-
-/* Seleção de role */
-.roleBtns {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-
-.roleBtns button {
-  flex: 1;
-  padding: 8px;
-  border: 2px solid var(--border-color); /* Cor aplicada */
-  border-radius: 8px;
-  background: transparent; /* Fundo */
-  color: var(--color-text); /* Cor do texto */
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.2s ease, border 0.2s ease;
-}
-
-.roleBtns button.active {
-  background-color: var(--color-primary); /* Cor aplicada */
-  border-color: var(--color-primary); /* Cor aplicada */
-  color: #111; /* Cor do texto */
-  font-weight: bold;
-}
-
-/* Ações no modal */
 .modalActions {
   display: flex;
-  justify-content: space-evenly;
-  gap: 10px;
+  justify-content: flex-end; /* Alinha à direita */
+  gap: 12px;
+  margin-top: 20px;
 }
 
 .modalActions button {
-  padding: 8px 14px;
+  padding: 8px 16px;
   border: none;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -195,18 +151,19 @@
   transition: opacity 0.2s ease;
 }
 
-.modalActions button:hover {
+.btnConfirm {
+  background-color: var(--color-primary);
+  color: #111;
+}
+.btnConfirm:hover {
   opacity: 0.85;
 }
 
-/* Botão de confirmar */
-.modalActions button[type="submit"] {
-  background-color: var(--color-primary); /* Cor aplicada */
-  color: #111;
+.btnCancel {
+  background-color: var(--shadow-color-inputs);
+  color: var(--color-text);
+  border: 1px solid var(--border-color);
 }
-
-/* Botão de cancelar */
-.modalActions button[type="button"] {
-  background-color: var(--color-danger); /* Cor aplicada */
-  color: white;
+.btnCancel:hover {
+  background-color: var(--border-color);
 }

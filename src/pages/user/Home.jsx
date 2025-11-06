@@ -159,12 +159,12 @@ export default function Home() {
       id: item.id,
       nome: item.nome,
       imagem: item.imagem,
-      quantidade: item.quantity, // <--- Atenção aqui
+      quantidade: item.quantity, 
       precoUnitario: item.preco,
     }));
 
     const valorTotal = cart.reduce(
-      (acc, item) => acc + item.preco * item.quantity, // <--- E aqui
+      (acc, item) => acc + item.preco * item.quantity,
       0
     );
 
@@ -254,6 +254,67 @@ export default function Home() {
           </div>
         </div>
       </header>
+      {/* filtros */}
+      <div className={styles.filtersContainer}>
+        {/* Input de Busca */}
+        <input
+          type="text"
+          placeholder="Pesquisar produto..."
+          className={styles.searchInput}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+
+        <div className={styles.filterSelectContainer}>
+          {/* Select de Categoria */}
+          <select
+            className={styles.selectFilter}
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value="all">Todas as Categorias</option>
+            {/* O .slice(1) pula o "all" que já está no array */}
+            {categories.slice(1).map((category) => (
+              <option key={category} value={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+
+          {/* Filtro de Faixa de Preço (Range Sliders) */}
+          <div className={styles.priceRangeContainer}>
+            <label>
+              Preço: R$ {minPrice.toFixed(2)} até R$ {maxPrice.toFixed(2)}
+            </label>
+            <div className={styles.rangeSliders}>
+              <input
+                type="range"
+                min="1"
+                max="1000"
+                value={minPrice}
+                className={styles.rangeInput}
+                onChange={(e) => {
+                  const newMin = Number(e.target.value);
+                  // Garante que o mínimo não seja maior que o máximo
+                  setMinPrice(Math.min(newMin, maxPrice));
+                }}
+              />
+              <input
+                type="range"
+                min="1"
+                max="1000"
+                value={maxPrice}
+                className={styles.rangeInput}
+                onChange={(e) => {
+                  const newMax = Number(e.target.value);
+                  // Garante que o máximo não seja menor que o mínimo
+                  setMaxPrice(Math.max(newMax, minPrice));
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div className={styles.filtersContainer}></div>
       <main className={styles.productsGrid}>
