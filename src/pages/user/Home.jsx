@@ -28,15 +28,12 @@ export default function Home() {
   const [minPrice, setMinPrice] = useState(1);
   const [maxPrice, setMaxPrice] = useState(1000);
 
-  // --- MUDANÇA 1: Adicionar estado para o modal de alerta ---
   const [modalInfo, setModalInfo] = useState({
     isOpen: false,
     title: "",
     message: "",
     onCloseCallback: null, // Para lidar com o redirecionamento
   });
-
-  // ... (useEffect de produtos, filteredProducts, categories, handleLogout, useEffect de admin não mudam) ...
   useEffect(() => {
     const unsub = onSnapshot(collection(db, "produtos"), (snapshot) => {
       const activeProducts = snapshot.docs
@@ -109,7 +106,6 @@ export default function Home() {
     if (existingItem) {
       const newQuantity = existingItem.quantity + 1;
       if (newQuantity > productToAdd.quantidade) {
-        // --- MUDANÇA 2: Substituir alert por modal ---
         setModalInfo({
           isOpen: true,
           title: "Estoque Insuficiente",
@@ -126,7 +122,6 @@ export default function Home() {
       );
     } else {
       if (1 > productToAdd.quantidade) {
-        // --- MUDANÇA 3: Substituir alert por modal ---
         setModalInfo({
           isOpen: true,
           title: "Fora de Estoque",
@@ -141,7 +136,6 @@ export default function Home() {
   const handleUpdateQuantity = (productId, newQuantity) => {
     const itemToUpdate = cart.find((item) => item.id === productId);
     if (newQuantity > itemToUpdate.quantidade) {
-      // --- MUDANÇA 4: Substituir alert por modal ---
       setModalInfo({
         isOpen: true,
         title: "Estoque Insuficiente",
@@ -166,7 +160,6 @@ export default function Home() {
 
   const handleFinalizePurchase = async (addressData) => {
     if (!currentUser) {
-      // --- MUDANÇA 5: Substituir alert por modal (com callback) ---
       setModalInfo({
         isOpen: true,
         title: "Acesso Negado",
@@ -177,7 +170,6 @@ export default function Home() {
     }
 
     if (cart.length === 0) {
-      // --- MUDANÇA 6: Substituir alert por modal ---
       setModalInfo({
         isOpen: true,
         title: "Carrinho Vazio",
@@ -228,8 +220,6 @@ export default function Home() {
       setCart([]);
     } catch (error) {
       console.error("Erro ao finalizar a compra:", error);
-      // Este erro é capturado pelo CartDrawer, que (atualmente) mostra seu próprio alerta.
-      // Para mudar isso, teríamos que modificar o CartDrawer também.
       throw new Error("Falha ao processar o pedido. Tente novamente.");
     }
   };
@@ -249,10 +239,9 @@ export default function Home() {
     setModalInfo({ isOpen: false, title: "", message: "", onCloseCallback: null });
   };
 
-
   return (
     <div className={styles.container}>
-      <header className={styles.header}>''
+      <header className={styles.header}>
         <h1 className={styles.title}>Oh my computer is sick!</h1>
         <div className={styles.navButtonsContainer}>
           <div className={styles.navButtonsLeft}>
