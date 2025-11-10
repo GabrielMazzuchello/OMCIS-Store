@@ -1,10 +1,8 @@
-// src/components/TopSellingProducts.js
-
 import React, { useState, useMemo } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { subDays, startOfDay, endOfDay } from "date-fns";
-import styles from "../pages/admin/Dashboard.module.css"; // Ajuste o caminho se necessário
+import styles from "../pages/admin/Dashboard.module.css"; 
 
 const TopSellingProducts = ({ orders, loading }) => {
   const [startDate, setStartDate] = useState(subDays(new Date(), 30));
@@ -20,7 +18,6 @@ const TopSellingProducts = ({ orders, loading }) => {
       );
     });
 
-    // 2. Agrega os produtos e suas quantidades
     const productSales = new Map();
     for (const order of filteredOrders) {
       for (const product of order.produtos) {
@@ -33,20 +30,16 @@ const TopSellingProducts = ({ orders, loading }) => {
       }
     }
 
-    // 3. Transforma o Map em um Array e ordena
     let sortedSellers = Array.from(productSales.values()).sort(
       (a, b) => b.totalSold - a.totalSold
     );
 
-    // 4. Filtra pelo termo de pesquisa (se houver)
     if (searchTerm) {
       sortedSellers = sortedSellers.filter((p) =>
         p.nome.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
-    // 5. MUDANÇA AQUI: Retorna apenas os 4 primeiros resultados
-    // Se quiser 3, é só mudar para .slice(0, 3)
     return sortedSellers.slice(0, 4);
   }, [orders, startDate, endDate, searchTerm]);
 

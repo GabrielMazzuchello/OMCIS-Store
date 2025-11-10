@@ -86,12 +86,40 @@ const CartSummary = ({
 };
 
 // --- Componente 2: Formulário de Endereço ---
+// --- Funções de Máscara ---
+
+// Formata para CEP: 99999-999
+const maskCEP = (value) => {
+  return value
+    .replace(/\D/g, "") // Remove tudo que não for dígito
+    .slice(0, 8) // Limita a 8 dígitos
+    .replace(/(\d{5})(\d)/, "$1-$2");
+};
+
+// Formata para Telefone: (99) 99999-9999 (celular com 11 dígitos)
+const maskTelefone = (value) => {
+  return value
+    .replace(/\D/g, "") // Remove tudo que não for dígito
+    .slice(0, 11) // Limita a 11 dígitos
+    .replace(/^(\d{2})/, "($1) ")
+    .replace(/(\d{5})(\d)/, "$1-$2");
+};
+
 const AddressForm = ({ onNext, onBack, formData, setFormData }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    // Aplica a máscara baseada no nome do input
+    let formattedValue = value;
+    if (name === "telefone") {
+      formattedValue = maskTelefone(value);
+    } else if (name === "cep") {
+      formattedValue = maskCEP(value);
+    }
+
     setFormData((prevData) => ({
       ...prevData,
-      [name]: value,
+      [name]: formattedValue, // Salva o valor já formatado
     }));
   };
 
@@ -106,20 +134,22 @@ const AddressForm = ({ onNext, onBack, formData, setFormData }) => {
     <div>
       <h3>Endereço de Entrega</h3>
       <input
-        type="tel"
+        type="tel" 
         placeholder="Telefone"
         className={styles.inputField}
         name="telefone"
         value={formData.telefone}
         onChange={handleChange}
+        maxLength={15} // (XX) XXXXX-XXXX (15 caracteres)
       />
       <input
-        type="text"
+        type="tel" 
         placeholder="CEP"
         className={styles.inputField}
         name="cep"
         value={formData.cep}
         onChange={handleChange}
+        maxLength={9} // XXXXX-XXX (9 caracteres)
       />
       <input
         type="text"
@@ -174,7 +204,6 @@ const AddressForm = ({ onNext, onBack, formData, setFormData }) => {
 const PaymentForm = ({ onBack, onFinish }) => (
   <div>
     <h3>Pagamento</h3>
-    <p>Aqui entrariam os campos de cartão de crédito (apenas para exibição).</p>
     <div className={styles.navigationButtons}>
       <button onClick={onBack} className={styles.backBtn}>
         Voltar

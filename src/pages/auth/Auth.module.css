@@ -1,21 +1,20 @@
 :root {
-  /* Cores principais */
-  --color-text: aliceblue;
+  /* Cores principais*/
+  --color-text: #c2e0f9;     /* Texto do Admin */
   --color-primary: #63debe;
 
-  /* Backgrounds */
-  --bg-body: #0b0f17;
-  --bg-body2: #05090f;
-  --bg-page: #141c25;
-  --bg-page2: #0e131e;
+  /* Backgrounds - ALINHADOS COM SEU ADMINLAYOUT */
+  --bg-body: #0b0f17;     /* Fundo mais escuro (usado nos inputs) */
+  --bg-page: #141c25;     /* Fundo principal (usado no form) */
 
-  /* Bordas e sombras */
-  --border-color: #334155;
-  --shadow-color: #222b37;
-  --hover-color: black;
+  /* Bordas e sombras*/
+  --border-color: #334155;  
+  --shadow-color: #222b37;  
 
-  /* açõo */
-  --activate: rgba(6, 68, 0, 0.933);
+  /* Ação */
+  --hover-color: var(--color-primary); 
+  --activate: var(--color-primary);    
+  --danger-color: crimson;             
 }
 
 .authContainer {
@@ -24,7 +23,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-color: var(--bg-body2);
+  background-color: var(--bg-body); 
   gap: 15px;
 }
 
@@ -33,22 +32,23 @@
   flex-direction: column;
   gap: 10px;
   padding: 2em;
-  background-color: var(--bg-page2);
+  background-color: var(--bg-page); 
   border-radius: 25px;
   transition: 0.4s ease-in-out;
   width: 320px;
+  border: 1px solid var(--border-color); 
 }
 
 .formLogin:hover {
-  transform: scale(1.05);
-  border: 1px solid var(--hover-color);
+  transform: scale(1.02); 
+  border: 1px solid var(--hover-color); 
 }
 
 .formLogin h1,
 .auth-container h1 {
   text-align: center;
   margin-bottom: 1.5em;
-  color: var(--color-text);
+  color: var(--color-text); 
   font-size: 35px;
   margin: 0;
   padding: 10px;
@@ -61,14 +61,16 @@
   padding: 0.8em;
   border-radius: 25px;
   color: var(--color-text);
-  background-color: var(--bg-body2);
-  box-shadow: inset 2px 5px 10px #050505;
+  background-color: var(--bg-body);
+  box-shadow: inset 2px 3px 5px var(--shadow-color);
+  border: 1px solid var(--border-color); 
 }
 
 .formLogin input::placeholder {
   color: #a0a0a0;
 }
 
+/* Botão principal com mais destaque */
 .formLogin_button {
   margin-top: 1.5em;
   padding: 0.7em;
@@ -76,28 +78,32 @@
   border: none;
   outline: none;
   transition: 0.4s ease-in-out;
-  background-color: var(--bg-body2);
+  background-color: var(--border-color); 
   color: white;
+  font-weight: bold;
   cursor: pointer;
 }
 
+/* Hover do botão principal usa a cor primária */
 .formLogin_button:hover {
   background-color: var(--activate);
+  color: #000; 
 }
 
+/* Botão secundário (toggle) */
 .toggleBtn {
   margin-top: 1em;
   padding: 0.6em;
   border-radius: 5px;
   border: none;
-  background-color: var(--bg-body2);
-  color: white;
+  background-color: transparent; 
+  color: var(--color-text);      
   transition: 0.3s ease-in-out;
   cursor: pointer;
 }
 
 .toggleBtn:hover {
-  background-color: red;
+  background-color: var(--danger-color); 
   color: white;
 }
 
@@ -105,7 +111,7 @@
   margin-top: 1em;
   padding: 0.6em;
   border-radius: 5px;
-  background-color: #ff4444;
+  background-color: #ff4444; 
   color: white;
   text-align: center;
   font-size: 0.9em;

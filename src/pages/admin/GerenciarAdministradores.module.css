@@ -6,7 +6,6 @@
   background-color: var(--bg-body);
   color: var(--color-text);
   border-radius: 15px;
-  /* Garante que o layout de duas listas funcione */
   max-height: 100%;
   overflow-y: auto;
 }

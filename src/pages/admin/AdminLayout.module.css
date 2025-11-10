@@ -40,9 +40,7 @@
   border: 3px solid var(--border-color);
   border-radius: 15px;
   box-shadow: inset 0px 0px 20px 5px var(--shadow-color);
-  min-height: 100%;
-  max-width: 250px;
-  flex: 1;
+  flex: 0 0 250px;
 }
 
 .header_container {
@@ -66,6 +64,9 @@
   border-radius: 15px;
   flex: 1;
   overflow: auto;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .navLink {
